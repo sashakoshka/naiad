@@ -1,15 +1,14 @@
 package naiad
 
 import "time"
+import "github.com/faiface/pixel"
 import "github.com/faiface/pixel/imdraw"
 import "github.com/faiface/pixel/pixelgl"
 
 type Window struct {
-	Vector
-	
 	title       string
 	// TODO: icon
-	bounds      Rectangle
+	size        Vector
 	position    Vector
 	// TODO: monitor
 	// Equivalent of Resizable, but the other way around. Being able to
@@ -38,8 +37,11 @@ func (window *Window) Show () (err error) {
 
 	window.artist = imdraw.New(nil)
 	window.window, err = pixelgl.NewWindow (pixelgl.WindowConfig {
-		Title:                  window.title,
-		Bounds:                 window.bounds.pixellate(),
+		Title:  window.title,
+		Bounds: pixel.R (
+			0, 0,
+			window.size.X(),
+			window.size.Y()),
 		Position:               window.position.pixellate(),
 		Resizable:             !window.fixedSize,
 		Undecorated:            window.undecorated,
@@ -63,20 +65,23 @@ func (window *Window) SetTitle (title string) {
 	window.title = title
 }
 
-/* SetBounds sets the bounds of the window to a rectangle.
+/* SetSize sets the size of the window to the dimensions specified by a vector.
  */
-func (window *Window) SetBounds (bounds Rectangle) {
+func (window *Window) SetSize (size Vector) {
 	if window.window != nil {
-		window.window.SetBounds(bounds.pixellate())
+		window.window.SetBounds (pixel.R (
+			0, 0,
+			window.size.X(),
+			window.size.Y()))
 	}
 
-	window.bounds = bounds
+	window.size = size
 }
 
-/* Bounds returns the bounds of the window as a rectangle
+/* Size returns the bounds of the window as a rectangle
  */
-func (window *Window) Bounds () (bounds Rectangle) {
-	return window.bounds
+func (window *Window) Size () (size Vector) {
+	return window.size
 }
 
 /* SetTransparent sets whether or not the window has a transparent framebuffer,
@@ -116,9 +121,9 @@ func (window *Window) Poll () {
  * screen if needed
  */
 func (window *Window) processEvents () {
-	newBounds := rFromPixel(window.window.Bounds())
-	window.draw(newBounds != window.bounds)
-	window.bounds = newBounds
+	newSize := vFromPixel(window.window.Bounds().Max)
+	window.draw(newSize != window.size)
+	window.size = newSize
 }
 
 /* draw redraws all shapes that need to be redrawn. If force is set to true, it
