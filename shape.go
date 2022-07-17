@@ -8,12 +8,6 @@ type ShapeKind int
 
 const (
 	ShapeKindPolygon = iota
-	ShapeKindPolyline
-	ShapeKindRectangle
-	ShapeKindCircle
-	ShapeKindCircleArc
-	ShapeKindEllipse
-	ShapeKindEllipseArc
 	ShapeKindText
 )
 
@@ -101,49 +95,8 @@ type ShapePolygon struct {
 	shapePoly
 }
 
-type ShapePolyline struct {
-	shapeBase
-	shapePoly
-}
-
-type ShapeRectangle struct {
-	shapeBase
-	start Point
-	end   Point
-}
-
-type ShapeCircle struct {
-	shapeBase
-	center Point
-	size   float64
-}
-
-type ShapeCircleArc struct {
-	shapeBase
-	center Point
-	size   float64
-	low    float64
-	high   float64
-}
-
 func (polygon *ShapePolygon) Kind () (kind ShapeKind) {
 	return ShapeKindPolygon
-}
-
-func (polygon *ShapePolyline) Kind () (kind ShapeKind) {
-	return ShapeKindPolyline
-}
-
-func (rectangle *ShapeRectangle) Kind () (kind ShapeKind) {
-	return ShapeKindRectangle
-}
-
-func (circle *ShapeCircle) Kind () (kind ShapeKind) {
-	return ShapeKindCircle
-}
-
-func (circle *ShapeCircleArc) Kind () (kind ShapeKind) {
-	return ShapeKindCircleArc
 }
 
 func (polygon *ShapePolygon) draw (artist *imdraw.IMDraw) {
@@ -155,37 +108,9 @@ func (polygon *ShapePolygon) draw (artist *imdraw.IMDraw) {
 		artist.Push(point.pixellate())
 	}
 
-	artist.Polygon(polygon.thickness)
-}
-
-func (polyline *ShapePolyline) draw (artist *imdraw.IMDraw) {
-	artist.SetMatrix(polyline.matrix)
-	
-	for _, point := range polyline.points {
-		artist.Color    = point.color
-		artist.EndShape = imdraw.EndShape(point.cap)
-		artist.Push(point.pixellate())
+	if polygon.Open() {
+		artist.Line(polygon.thickness)
+	} else {
+		artist.Polygon(polygon.thickness)
 	}
-
-	artist.Line(polyline.thickness)
-}
-
-func (rectangle *ShapeRectangle) draw (artist *imdraw.IMDraw) {
-	artist.SetMatrix(rectangle.matrix)
-	
-	artist.Color    = rectangle.start.color
-	artist.EndShape = imdraw.EndShape(rectangle.start.cap)
-	artist.Push(rectangle.start.pixellate())
-	
-	artist.Color    = rectangle.end.color
-	artist.EndShape = imdraw.EndShape(rectangle.end.cap)
-	artist.Push(rectangle.end.pixellate())
-
-	artist.Rectangle(rectangle.thickness)
-}
-
-func (circle *ShapeCircle) draw (artist *imdraw.IMDraw) {
-	artist.SetMatrix(circle.matrix)
-	artist.Push(circle.center.pixellate())
-	artist.Circle(circle.size, circle.thickness)
 }

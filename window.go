@@ -150,8 +150,6 @@ func (window *Window) draw (force bool) {
 		shape.draw(window.artist)
 		shape.SetClean()
 		updated = true
-
-		
 	}
 
 	if updated {

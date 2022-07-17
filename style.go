@@ -13,21 +13,21 @@ func (rgba RGBA) RGBA () (r, g, b, a uint32) {
 
 type Style struct {
 	thickness float64
-	precision int
+	open      bool
 }
 
 func (style *Style) Thickness () (thickness float64) {
 	return style.thickness
 }
 
-func (style *Style) Precision () (precision int) {
-	return style.precision
+func (style *Style) Open () (closed bool) {
+	return style.open
 }
 
 func (style *Style) SetThickness (thickness float64) {
 	style.thickness = thickness
 }
 
-func (style *Style) SetPrecision (precision int) {
-	style.precision = precision
+func (style *Style) SetOpen (open bool) {
+	style.open = open
 }

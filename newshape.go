@@ -2,15 +2,16 @@ package naiad
 
 import "github.com/faiface/pixel"
 
-func NewShapeRectangle (
+func NewShapePolygon (
 	x, y float64,
-	start, end Point,
 ) (
-	shape *ShapeRectangle,
+	shape *ShapePolygon,
 ) {
-	shape = &ShapeRectangle { }
+	shape = &ShapePolygon { }
 	shape.matrix = pixel.IM.Moved(pixel.V(x, y))
-	shape.start  = start
-	shape.end    = end
 	return
+}
+
+func (shape *ShapePolygon) Push (point Point) {
+	shape.points = append(shape.points, point)
 }
