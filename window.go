@@ -33,9 +33,10 @@ type Window struct {
 	window *pixelgl.Window
 }
 
-/* Show brings the window on screen. This should only be called once.
+/* Open brings the window on screen. If the window has already been opened, this
+ * method does nothing.
  */
-func (window *Window) Show () (err error) {
+func (window *Window) Open () (err error) {
 	if window.window != nil { return }
 
 	var icon []pixel.Picture
@@ -75,7 +76,7 @@ func (window *Window) SetTitle (title string) {
 }
 
 /* SetIcon takes in different resolutions of the same icon (all images) and sets
- * the window icon. This will not do anything once the window has been shown.
+ * the window icon. This will not do anything after open has been called.
  */
 func (window *Window) SetIcon (icon ...image.Image) {
 	if window.window != nil {
