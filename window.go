@@ -1,6 +1,5 @@
 package naiad
 
-import "time"
 import "image"
 import "image/color"
 import "container/list"
@@ -63,88 +62,6 @@ func (window *Window) Open () (err error) {
 	})
 
 	return
-}
-
-/* SetTitle sets the window title.
- */
-func (window *Window) SetTitle (title string) {
-	if window.window != nil {
-		window.window.SetTitle(title)
-	}
-
-	window.title = title
-}
-
-/* SetIcon takes in different resolutions of the same icon (all images) and sets
- * the window icon. This will not do anything after open has been called.
- */
-func (window *Window) SetIcon (icon ...image.Image) {
-	if window.window != nil {
-		return
-	}	
-
-	window.icon = icon
-}
-
-/* SetSize sets the size of the window to the dimensions specified by a vector.
- */
-func (window *Window) SetSize (size Vector) {
-	if window.window != nil {
-		window.window.SetBounds (pixel.R (
-			0, 0,
-			window.size.X(),
-			window.size.Y()))
-	}
-
-	window.size = size
-}
-
-/* Size returns the bounds of the window as a rectangle
- */
-func (window *Window) Size () (size Vector) {
-	return window.size
-}
-
-/* SetTransparent sets whether or not the window has a transparent framebuffer,
- * if supported.
- */
-func (window *Window) SetTransparent (transparent bool) {
-	if window.window != nil { return }
-	window.transparent = transparent
-}
-
-/* Closed returns. whether the window is closed
- */
-func (window *Window) Closed () (closed bool) {
-	if window.window == nil { return true }
-	return window.window.Closed()
-}
-
-/* Await waits for an event to occur, or the timeout to elapse. It then redraws
- * the screen if needed. If the timeout is zero, there won't actually be a
- * timeout and it will just wait forever for an event.
- */
-func (window *Window) Await (timeout time.Duration) {
-	if window.window == nil { return }
-	window.window.UpdateInputWait(timeout)
-	window.processEvents()
-}
-
-/* Poll polls events, and redraws the screen if needed. This is non-blocking.
- */
-func (window *Window) Poll () {
-	if window.window == nil { return }
-	window.window.Update()
-	window.processEvents()
-}
-
-/* processEvents reacts to any events that have been recieved, and redraws the
- * screen if needed
- */
-func (window *Window) processEvents () {
-	newSize := vFromPixel(window.window.Bounds().Max)
-	window.draw(newSize != window.size)
-	window.size = newSize
 }
 
 /* draw redraws all shapes that need to be redrawn. If force is set to true, it
