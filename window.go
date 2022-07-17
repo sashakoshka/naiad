@@ -1,6 +1,7 @@
 package naiad
 
 import "time"
+import "container/list"
 import "github.com/faiface/pixel"
 import "github.com/faiface/pixel/imdraw"
 import "github.com/faiface/pixel/pixelgl"
@@ -25,7 +26,7 @@ type Window struct {
 
 	boundsDirty bool
 	artist *imdraw.IMDraw
-	shapes []Shape
+	shapes list.List
 	
 	window *pixelgl.Window
 }
@@ -138,12 +139,16 @@ func (window *Window) draw (force bool) {
 	}
 
 	window.artist.Clear()
-	for _, shape := range window.shapes {
+	element := window.shapes.Front()
+	for element != nil {
+		shape := element.Value.(Shape)
 		if !shape.Dirty() && !force { continue }
 
 		shape.draw(window.artist)
 		shape.SetClean()
 		updated = true
+
+		element = element.Next()
 	}
 
 	if updated {
