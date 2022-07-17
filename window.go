@@ -1,6 +1,7 @@
 package naiad
 
 import "time"
+import "image/color"
 import "container/list"
 import "github.com/faiface/pixel"
 import "github.com/faiface/pixel/imdraw"
@@ -135,7 +136,7 @@ func (window *Window) draw (force bool) {
 
 	updated := force
 	if force {
-		window.window.Clear(RGBA { 0, 0, 0, 0 })
+		window.window.Clear(color.RGBA { 0, 0, 0, 0 })
 	}
 
 	window.artist.Clear()
