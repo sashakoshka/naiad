@@ -7,7 +7,7 @@ import "github.com/faiface/pixel/imdraw"
 type ShapeKind int
 
 const (
-	ShapeKindPolygon = iota
+	ShapeKindPath = iota
 	ShapeKindText
 )
 
@@ -70,14 +70,6 @@ type shapeBase struct {
 	clean bool
 }
 
-type shapePoly struct {
-	points []Point
-}
-
-func (shape *shapePoly) Push (point Point) {
-	shape.points = append(shape.points, point)
-}
-
 func (base *shapeBase) Dirty () (isDirty bool) {
 	return !base.clean
 }
@@ -88,29 +80,4 @@ func (base *shapeBase) SetDirty () {
 
 func (base *shapeBase) SetClean () {
 	base.clean = true
-}
-
-type ShapePolygon struct {
-	shapeBase
-	shapePoly
-}
-
-func (polygon *ShapePolygon) Kind () (kind ShapeKind) {
-	return ShapeKindPolygon
-}
-
-func (polygon *ShapePolygon) draw (artist *imdraw.IMDraw) {
-	artist.SetMatrix(polygon.matrix)
-
-	for _, point := range polygon.points {
-		artist.Color = point.color
-		artist.EndShape = imdraw.EndShape(point.cap)
-		artist.Push(point.pixellate())
-	}
-
-	if polygon.Open() {
-		artist.Line(polygon.thickness)
-	} else {
-		artist.Polygon(polygon.thickness)
-	}
 }
