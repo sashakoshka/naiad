@@ -1,6 +1,7 @@
 package naiad
 
 import "time"
+import "image"
 import "image/color"
 import "container/list"
 import "github.com/faiface/pixel"
@@ -9,7 +10,7 @@ import "github.com/faiface/pixel/pixelgl"
 
 type Window struct {
 	title       string
-	// TODO: icon
+	icon        []image.Image
 	size        Vector
 	position    Vector
 	// TODO: monitor
@@ -37,9 +38,15 @@ type Window struct {
 func (window *Window) Show () (err error) {
 	if window.window != nil { return }
 
+	var icon []pixel.Picture
+	for _, size := range window.icon {
+		icon = append(icon, pixel.PictureDataFromImage(size))
+	}
+
 	window.artist = imdraw.New(nil)
 	window.window, err = pixelgl.NewWindow (pixelgl.WindowConfig {
 		Title:  window.title,
+		Icon:   icon,
 		Bounds: pixel.R (
 			0, 0,
 			window.size.X(),
@@ -65,6 +72,17 @@ func (window *Window) SetTitle (title string) {
 	}
 
 	window.title = title
+}
+
+/* SetIcon takes in different resolutions of the same icon (all images) and sets
+ * the window icon. This will not do anything once the window has been shown.
+ */
+func (window *Window) SetIcon (icon ...image.Image) {
+	if window.window != nil {
+		return
+	}	
+
+	window.icon = icon
 }
 
 /* SetSize sets the size of the window to the dimensions specified by a vector.
