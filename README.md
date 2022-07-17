@@ -1,5 +1,7 @@
 # naiad
 
+![Naiad logo](assets/logo.png)
+
 Naiad lets you create vector-based imagery in windows. It is designed for
 creating graphical user interfaces. It wraps
 [pixel](https://github.com/faiface/pixel) and provides a simple way to manage
