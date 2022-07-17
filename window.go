@@ -139,8 +139,11 @@ func (window *Window) draw (force bool) {
 	}
 
 	window.artist.Clear()
-	element := window.shapes.Front()
-	for element != nil {
+	
+	for element := window.shapes.Front();
+		element != nil;
+		element = element.Next() {
+		
 		shape := element.Value.(Shape)
 		if !shape.Dirty() && !force { continue }
 
@@ -148,7 +151,7 @@ func (window *Window) draw (force bool) {
 		shape.SetClean()
 		updated = true
 
-		element = element.Next()
+		
 	}
 
 	if updated {
