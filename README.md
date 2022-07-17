@@ -7,3 +7,5 @@ persistent shapes on screen.
 
 This library is not designed to be used in conjunction with pixel, it abstracts
 it away. Eventually it will just use raw OpenGL as a backend.
+
+It is not done yet dont use it
