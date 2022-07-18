@@ -23,6 +23,13 @@ func (shape *ShapePath) Push (point Point) {
 	shape.calculateBounds()
 }
 
+func (shape *ShapePath) Pop () (point Point) {
+	point = shape.points[len(shape.points) - 1]
+	shape.points = shape.points[:len(shape.points) - 1]
+	shape.calculateBounds()
+	return
+}
+
 func (polygon *ShapePath) Kind () (kind ShapeKind) {
 	return ShapeKindPath
 }
