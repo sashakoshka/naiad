@@ -28,3 +28,11 @@ func (vector Vector) X () (x float64) {
 func (vector Vector) Y () (y float64) {
 	return vector.y
 }
+
+func (vector* Vector) SetX (x float64) {
+	vector.x = x
+}
+
+func (vector *Vector) SetY (y float64) {
+	vector.y = y
+}

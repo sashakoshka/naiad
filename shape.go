@@ -67,7 +67,35 @@ type shapeBase struct {
 	Transform
 	Style
 
+	min   Vector
+	max   Vector
 	clean bool
+}
+
+func (base *shapeBase) contractMin (min Vector) {
+	if min.X() < base.min.X() {
+		base.min.SetX(min.X())
+	}
+	
+	if min.Y() < base.min.Y() {
+		base.min.SetY(min.Y())
+	}
+}
+
+func (base *shapeBase) expandMax (max Vector) {
+	if max.X() > base.max.X() {
+		base.max.SetX(max.X())
+	}
+	
+	if max.Y() > base.max.Y() {
+		base.max.SetY(max.Y())
+	}
+}
+
+func (base *shapeBase) GetBounds () (min, max Vector) {
+	// TODO: reverse transformation matrix in Transform for min and max, and
+	// return them
+	return
 }
 
 func (base *shapeBase) Dirty () (isDirty bool) {

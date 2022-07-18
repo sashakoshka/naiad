@@ -28,3 +28,9 @@ func (window *Window) processEvents () {
 	window.draw(newSize != window.size)
 	window.size = newSize
 }
+
+/* detectMouseOver detects which shape is being hovered over by the mouse.
+ */
+// func (window *Window) detectMouseOver () {
+	// 
+// }

@@ -20,6 +20,7 @@ func NewShapePath (
 
 func (shape *ShapePath) Push (point Point) {
 	shape.points = append(shape.points, point)
+	shape.calculateBounds()
 }
 
 func (polygon *ShapePath) Kind () (kind ShapeKind) {
@@ -39,5 +40,20 @@ func (shape *ShapePath) draw (artist *imdraw.IMDraw) {
 		artist.Line(shape.thickness)
 	} else {
 		artist.Polygon(shape.thickness)
+	}
+}
+
+func (shape *ShapePath) calculateBounds () {
+	if len(shape.points) > 0 {
+		shape.min = shape.points[0].Vector
+		shape.max = shape.points[0].Vector
+	} else {
+		shape.min = Vector { }
+		shape.max = Vector { }
+	}
+
+	for _, point := range shape.points {
+		shape.contractMin(point.Vector)
+		shape.expandMax(point.Vector)
 	}
 }
