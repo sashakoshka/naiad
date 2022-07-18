@@ -14,7 +14,7 @@ func V (x, y float64) (vector Vector) {
 }
 
 func (vector Vector) pixellate () (vec pixel.Vec) {
-	return pixel.V(vector.x, vector.y)
+	return pixel.Vec { X: vector.x, Y: vector.y }
 }
 
 func vFromPixel (vec pixel.Vec) (vector Vector) {

@@ -61,14 +61,22 @@ type Shape interface {
 	/* SetClean causes the shape to be flagged as clean.
 	 */
 	SetClean ()
+
+	/* GetBounds returns the shape's bounds, mapped to real coordinates on
+	 * the screen.
+	 */
+	GetBounds () (min, max Vector)
 }
 
 type shapeBase struct {
 	Transform
 	Style
 
-	min   Vector
-	max   Vector
+	min     Vector
+	max     Vector
+	realMin Vector
+	realMax Vector
+	
 	clean bool
 }
 
@@ -92,10 +100,13 @@ func (base *shapeBase) expandMax (max Vector) {
 	}
 }
 
+func (base *shapeBase) calculateRealBounds () {
+	base.realMax = vFromPixel(base.matrix.Project((base.max.pixellate())))
+	base.realMin = vFromPixel(base.matrix.Project((base.min.pixellate())))
+}
+
 func (base *shapeBase) GetBounds () (min, max Vector) {
-	// TODO: reverse transformation matrix in Transform for min and max, and
-	// return them
-	return
+	return base.realMin, base.realMax
 }
 
 func (base *shapeBase) Dirty () (isDirty bool) {

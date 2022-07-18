@@ -63,4 +63,6 @@ func (shape *ShapePath) calculateBounds () {
 		shape.contractMin(point.Vector)
 		shape.expandMax(point.Vector)
 	}
+
+	shape.calculateRealBounds()
 }
