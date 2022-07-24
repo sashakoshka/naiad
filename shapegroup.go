@@ -47,6 +47,13 @@ func (group *ShapeGroup) Kind () (kind ShapeKind) {
 }
 
 func (group *ShapeGroup) draw (target pixel.Target) {
+	defer group.SetClean()
+	
+	// don't even attempt to do anything if bounds are less than one
+	if group.max.X() < 1 || group.max.Y() < 1 {
+		return
+	}
+
 	// if we don't have a canvas, or the canvas is not the size we need,
 	// create a new one.
 	needNewCanvas :=
@@ -71,5 +78,4 @@ func (group *ShapeGroup) draw (target pixel.Target) {
 
 	// draw group's canvas onto target
 	group.canvas.Draw(target, group.matrix)
-	group.SetClean()
 }
