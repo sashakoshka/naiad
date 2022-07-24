@@ -62,6 +62,7 @@ type Shape interface {
 	/* GetBounds returns the shape's bounds, mapped to real coordinates on
 	 * the screen.
 	 */
+	// TODO: rename to Bounds()
 	GetBounds () (min, max Vector)
 
 	/* setParent shets the shape's parent.
@@ -174,6 +175,7 @@ func (base *shapeBase) Dirty () (isDirty bool) {
 }
 
 func (base *shapeBase) SetDirty () {
+	if base.Dirty() { return }
 	base.clean = false
 
 	// if this shape needs to be redrawn, then so do all of its parents.

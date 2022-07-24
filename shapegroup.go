@@ -9,24 +9,28 @@ type ShapeGroup struct {
 	shapeBase
 	shapes []Shape
 	canvas *pixelgl.Canvas
-	calculatedW float64
-	calculatedH float64
 }
 
 func NewShapeGroup (
 	x, y float64,
+	w, h float64,
 ) (
 	group *ShapeGroup,
 ) {
 	group = &ShapeGroup { }
 	group.SetPosition(V(x, y))
+	group.SetBounds(V(w, h))
 	return
+}
+
+func (group *ShapeGroup) SetBounds (max Vector) {
+	group.max = max
+	group.SetDirty()
 }
 
 func (group *ShapeGroup) Push (shape Shape) {
 	shape.setParent(group)
 	group.shapes = append(group.shapes, shape)
-	group.calculateBounds()
 	group.SetDirty()
 }
 
@@ -34,7 +38,6 @@ func (group *ShapeGroup) Pop () (shape Shape) {
 	shape.setParent(nil)
 	shape = group.shapes[len(group.shapes) - 1]
 	group.shapes = group.shapes[:len(group.shapes) - 1]
-	group.calculateBounds()
 	group.SetDirty()
 	return
 }
@@ -48,15 +51,14 @@ func (group *ShapeGroup) draw (target pixel.Target) {
 	// create a new one.
 	needNewCanvas :=
 		group.canvas == nil ||
-		group.canvas.Bounds().Max.X != group.calculatedW ||
-		group.canvas.Bounds().Max.Y != group.calculatedH
+		group.canvas.Bounds().Max != group.max.pixellate()
 	
 	if needNewCanvas {
 		group.SetDirty()
 		group.canvas = pixelgl.NewCanvas (pixel.R (
 			0, 0,
-			group.calculatedW,
-			group.calculatedH))
+			group.max.X(),
+			group.max.Y()))
 	}
 
 	// draw all shapes
@@ -70,26 +72,4 @@ func (group *ShapeGroup) draw (target pixel.Target) {
 	// draw group's canvas onto target
 	group.canvas.Draw(target, group.matrix)
 	group.SetClean()
-}
-
-func (group *ShapeGroup) calculateBounds () {
-	if len(group.shapes) > 0 {
-		group.min,
-		group.max = group.shapes[0].GetBounds()
-	} else {
-		group.min = Vector { }
-		group.max = Vector { }
-	}
-
-	for _, shape := range group.shapes {
-		shapeMin,
-		shapeMax := shape.GetBounds()
-		group.contractMin(shapeMin)
-		group.expandMax(shapeMax)
-	}
-
-	group.calculatedW = group.max.Y() - group.min.Y()
-	group.calculatedH = group.max.Y() - group.min.Y()
-
-	group.calculateTransform()
 }

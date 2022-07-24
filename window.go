@@ -71,6 +71,7 @@ func (window *Window) draw (force bool) {
 	}
 
 	if window.root.Dirty() || force {
+		println("drawing root group")
 		window.root.draw(window.window)
 	}
 	
