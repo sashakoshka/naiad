@@ -1,7 +1,6 @@
 package naiad
 
 import "github.com/faiface/pixel"
-import "github.com/faiface/pixel/imdraw"
 import "github.com/faiface/pixel/pixelgl"
 
 // TODO: put this at the root of the window instead of a list of shapes.
@@ -11,7 +10,6 @@ type ShapeGroup struct {
 	canvas *pixelgl.Canvas
 	calculatedW float64
 	calculatedH float64
-	artist *imdraw.IMDraw
 }
 
 func NewShapeGroup (
@@ -21,7 +19,6 @@ func NewShapeGroup (
 ) {
 	group = &ShapeGroup { }
 	group.SetPosition(V(x, y))
-	group.artist = imdraw.New(nil)
 	return
 }
 
@@ -45,7 +42,7 @@ func (group *ShapeGroup) Kind () (kind ShapeKind) {
 	return ShapeKindGroup
 }
 
-func (group *ShapeGroup) draw (artist *imdraw.IMDraw, target pixel.Target) {
+func (group *ShapeGroup) draw (target pixel.Target) {
 	// if we don't have a canvas, or the canvas is not the size we need,
 	// create a new one.
 	needNewCanvas :=
@@ -64,12 +61,13 @@ func (group *ShapeGroup) draw (artist *imdraw.IMDraw, target pixel.Target) {
 	// draw all shapes
 	if group.Dirty () {
 		for _, shape := range group.shapes {
-			shape.draw(artist, target)
-			shape.SetClean()
+			shape.draw(target)
 		}
 	}
 
-	group.artist.Draw(target)
+	// TODO: draw group's target onto target
+	// group.artist.Draw(target)
+	group.SetClean()
 }
 
 func (group *ShapeGroup) calculateBounds () {

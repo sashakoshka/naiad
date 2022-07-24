@@ -6,6 +6,7 @@ import "github.com/faiface/pixel/imdraw"
 type ShapePath struct {
 	shapeBase
 	points []Point
+	artist *imdraw.IMDraw
 }
 
 func NewShapePath (
@@ -32,23 +33,28 @@ func (shape *ShapePath) Pop () (point Point) {
 	return
 }
 
-func (polygon *ShapePath) Kind () (kind ShapeKind) {
+func (shape *ShapePath) Kind () (kind ShapeKind) {
 	return ShapeKindPath
 }
 
-func (shape *ShapePath) draw (artist *imdraw.IMDraw, target pixel.Target) {
-	artist.SetMatrix(shape.matrix)
+func (shape *ShapePath) draw (target pixel.Target) {
+	if shape.artist == nil {
+		shape.artist = imdraw.New(nil)
+	}
+
+	shape.artist.Clear()
+	shape.artist.SetMatrix(shape.matrix)
 
 	for _, point := range shape.points {
-		artist.Color = point.color
-		artist.EndShape = imdraw.EndShape(point.cap)
-		artist.Push(point.pixellate())
+		shape.artist.Color = point.color
+		shape.artist.EndShape = imdraw.EndShape(point.cap)
+		shape.artist.Push(point.pixellate())
 	}
 
 	if shape.Open() {
-		artist.Line(shape.thickness)
+		shape.artist.Line(shape.thickness)
 	} else {
-		artist.Polygon(shape.thickness)
+		shape.artist.Polygon(shape.thickness)
 	}
 }
 
@@ -67,4 +73,5 @@ func (shape *ShapePath) calculateBounds () {
 	}
 
 	shape.calculateTransform()
+	shape.SetClean()
 }

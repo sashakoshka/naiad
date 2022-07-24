@@ -2,7 +2,6 @@ package naiad
 
 import "image/color"
 import "github.com/faiface/pixel"
-import "github.com/faiface/pixel/imdraw"
 
 type ShapeKind int
 
@@ -42,7 +41,7 @@ type Shape interface {
 	/* draw draws the shape onto the specified target.
 	 */
 	// TODO: only include target, have each shape create its own artist.
-	draw (artist *imdraw.IMDraw, target pixel.Target)
+	draw (target pixel.Target)
 
 	/* Kind returns what kind of shape it is.
 	 */
