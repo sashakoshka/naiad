@@ -66,7 +66,9 @@ type Shape interface {
 
 type shapeBase struct {
 	Style
-	matrix pixel.Matrix
+	
+	matrix   pixel.Matrix
+	position Vector
 
 	min     Vector
 	max     Vector
@@ -74,6 +76,32 @@ type shapeBase struct {
 	realMax Vector
 	
 	clean bool
+}
+
+func (base *shapeBase) SetPosition (position Vector) {
+	base.matrix = pixel.IM.Moved(pixel.V(position.X(), position.Y()))
+	base.position = position
+	base.SetDirty()
+}
+
+func (base *shapeBase) SetX (x float64) {
+	base.matrix = pixel.IM.Moved(pixel.V(x, base.position.Y()))
+	base.position.SetX(x)
+	base.SetDirty()
+}
+
+func (base *shapeBase) SetY (y float64) {
+	base.matrix = pixel.IM.Moved(pixel.V(base.position.X(), y))
+	base.position.SetY(y)
+	base.SetDirty()
+}
+
+func (base *shapeBase) X () (x float64) {
+	return base.position.X()
+}
+
+func (base *shapeBase) Y () (y float64) {
+	return base.position.Y()
 }
 
 func (base *shapeBase) SetThickness (thickness float64) {
