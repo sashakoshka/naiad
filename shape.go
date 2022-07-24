@@ -139,11 +139,19 @@ func (base *shapeBase) calculateTransform () {
 	base.matrix = pixel.IM.Moved (
 		pixel.V(base.position.X(), base.position.Y()))
 
-	// TODO: take border width into account
 	// TODO: this will not work for rotation. need to go over all points and
 	// project them, then find bounds again.
-	base.realMax = vFromPixel(base.matrix.Project((base.max.pixellate())))
-	base.realMin = vFromPixel(base.matrix.Project((base.min.pixellate())))
+	minVector := base.matrix.Project(base.min.pixellate())
+	maxVector := base.matrix.Project(base.max.pixellate())
+
+	// the shape bounds need to encompass everything that gets drawn - so we
+	// must account for border thickness.
+	thicknessOffset := base.Thickness() / 2
+	minVector = minVector.Add(pixel.V(-thicknessOffset, -thicknessOffset))
+	maxVector = minVector.Add(pixel.V( thicknessOffset,  thicknessOffset))
+	
+	base.realMin = vFromPixel(minVector)
+	base.realMax = vFromPixel(maxVector)
 }
 
 func (base *shapeBase) GetBounds () (min, max Vector) {
