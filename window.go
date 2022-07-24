@@ -39,6 +39,8 @@ func (window *Window) Open () (err error) {
 	for _, size := range window.icon {
 		icon = append(icon, pixel.PictureDataFromImage(size))
 	}
+	
+	window.root.SetBounds(window.size)
 
 	window.window, err = pixelgl.NewWindow (pixelgl.WindowConfig {
 		Title:  window.title,
@@ -71,7 +73,6 @@ func (window *Window) draw (force bool) {
 	}
 
 	if window.root.Dirty() || force {
-		println("drawing root group")
 		window.root.draw(window.window)
 	}
 	
