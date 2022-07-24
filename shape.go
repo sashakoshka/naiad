@@ -62,10 +62,16 @@ type Shape interface {
 	 * the screen.
 	 */
 	GetBounds () (min, max Vector)
+
+	/* setParent shets the shape's parent.
+	 */
+	setParent (parent Shape)
 }
 
 type shapeBase struct {
 	Style
+
+	parent Shape
 	
 	matrix   pixel.Matrix
 	position Vector
@@ -76,6 +82,10 @@ type shapeBase struct {
 	realMax Vector
 	
 	clean bool
+}
+
+func (base *shapeBase) setParent (parent Shape) {
+	base.parent = parent
 }
 
 func (base *shapeBase) SetPosition (position Vector) {
@@ -164,6 +174,11 @@ func (base *shapeBase) Dirty () (isDirty bool) {
 
 func (base *shapeBase) SetDirty () {
 	base.clean = false
+
+	// if this shape needs to be redrawn, then so do all of its parents.
+	if base.parent != nil {
+		base.parent.SetDirty()
+	}
 }
 
 func (base *shapeBase) SetClean () {

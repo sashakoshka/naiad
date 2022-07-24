@@ -1,11 +1,13 @@
 package naiad
 
 import "github.com/faiface/pixel/imdraw"
+import "github.com/faiface/pixel/pixelgl"
 
 // TODO: put this at the root of the window instead of a list of shapes.
 type ShapeGroup struct {
 	shapeBase
 	shapes []Shape
+	canvas *pixelgl.Canvas
 }
 
 func NewShapeGroup (
@@ -19,12 +21,14 @@ func NewShapeGroup (
 }
 
 func (group *ShapeGroup) Push (shape Shape) {
+	shape.setParent(group)
 	group.shapes = append(group.shapes, shape)
 	group.calculateBounds()
 	group.SetDirty()
 }
 
 func (group *ShapeGroup) Pop () (shape Shape) {
+	shape.setParent(nil)
 	shape = group.shapes[len(group.shapes) - 1]
 	group.shapes = group.shapes[:len(group.shapes) - 1]
 	group.calculateBounds()
@@ -37,9 +41,10 @@ func (polygon *ShapeGroup) Kind () (kind ShapeKind) {
 }
 
 func (shape *ShapeGroup) draw (artist *imdraw.IMDraw) {
+	
 	// TODO: if internal buffer is nil, or bounds does not match, resize
 	// buffer and force redraw.
-	// TODO: range over shapes, and if any of them are dirty, redraw all of
+	// TODO: range over shapes redraw all of
 	// them to internal buffer.
 }
 

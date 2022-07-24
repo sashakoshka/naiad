@@ -38,4 +38,7 @@ func (window *Window) processEvents () {
 	// to follow the mouse - if a shape is not under the mouse pointer, do
 	// not go down that path. we will just be taking a liear path down the
 	// tree and storing a trace of that basically. O(log(n)) baby!
+	// we also need to "unravel" the cursor position with matrices. for
+	// every group we enter we need to unproject the cursor position by its
+	// matrix.
 // }
