@@ -79,20 +79,20 @@ type shapeBase struct {
 }
 
 func (base *shapeBase) SetPosition (position Vector) {
-	base.matrix = pixel.IM.Moved(pixel.V(position.X(), position.Y()))
 	base.position = position
+	base.calculateRealBounds()
 	base.SetDirty()
 }
 
 func (base *shapeBase) SetX (x float64) {
-	base.matrix = pixel.IM.Moved(pixel.V(x, base.position.Y()))
 	base.position.SetX(x)
+	base.calculateRealBounds()
 	base.SetDirty()
 }
 
 func (base *shapeBase) SetY (y float64) {
-	base.matrix = pixel.IM.Moved(pixel.V(base.position.X(), y))
 	base.position.SetY(y)
+	base.calculateRealBounds()
 	base.SetDirty()
 }
 
@@ -135,6 +135,10 @@ func (base *shapeBase) expandMax (max Vector) {
 }
 
 func (base *shapeBase) calculateRealBounds () {
+	// recalculate matrix
+	base.matrix = pixel.IM.Moved (
+		pixel.V(base.position.X(), base.position.Y()))
+
 	// TODO: this will not work for rotation. need to go over all points and
 	// project them, then find bounds again.
 	base.realMax = vFromPixel(base.matrix.Project((base.max.pixellate())))
