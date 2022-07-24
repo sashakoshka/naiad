@@ -1,6 +1,5 @@
 package naiad
 
-import "github.com/faiface/pixel"
 import "github.com/faiface/pixel/imdraw"
 
 type ShapePath struct {
@@ -14,7 +13,7 @@ func NewShapePath (
 	shape *ShapePath,
 ) {
 	shape = &ShapePath { }
-	shape.matrix = pixel.IM.Moved(pixel.V(x, y))
+	shape.SetPosition(V(x, y))
 	return
 }
 
