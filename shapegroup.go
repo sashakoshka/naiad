@@ -1,5 +1,6 @@
 package naiad
 
+import "image/color"
 import "github.com/faiface/pixel"
 import "github.com/faiface/pixel/pixelgl"
 
@@ -60,13 +61,14 @@ func (group *ShapeGroup) draw (target pixel.Target) {
 
 	// draw all shapes
 	if group.Dirty () {
+		group.canvas.Clear(color.RGBA { 0, 0, 0, 0 })
 		for _, shape := range group.shapes {
-			shape.draw(target)
+			shape.draw(group.canvas)
 		}
 	}
 
-	// TODO: draw group's target onto target
-	// group.artist.Draw(target)
+	// draw group's canvas onto target
+	group.canvas.Draw(target, group.matrix)
 	group.SetClean()
 }
 

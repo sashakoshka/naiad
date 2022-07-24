@@ -2,9 +2,7 @@ package naiad
 
 import "image"
 import "image/color"
-import "container/list"
 import "github.com/faiface/pixel"
-import "github.com/faiface/pixel/imdraw"
 import "github.com/faiface/pixel/pixelgl"
 
 type Window struct {
@@ -26,10 +24,9 @@ type Window struct {
 	maximized   bool
 
 	boundsDirty bool
-	artist *imdraw.IMDraw
-	shapes list.List
 	
 	window *pixelgl.Window
+	root   ShapeGroup
 }
 
 /* Open brings the window on screen. If the window has already been opened, this
@@ -43,7 +40,6 @@ func (window *Window) Open () (err error) {
 		icon = append(icon, pixel.PictureDataFromImage(size))
 	}
 
-	window.artist = imdraw.New(nil)
 	window.window, err = pixelgl.NewWindow (pixelgl.WindowConfig {
 		Title:  window.title,
 		Icon:   icon,
@@ -70,27 +66,25 @@ func (window *Window) Open () (err error) {
 func (window *Window) draw (force bool) {
 	if window.window == nil { return }
 
-	updated := force
 	if force {
 		window.window.Clear(color.RGBA { 0, 0, 0, 0 })
 	}
 
-	window.artist.Clear()
+	if window.root.Dirty() || force {
+		window.root.draw(window.window)
+	}
 	
-	for element := window.shapes.Front();
-		element != nil;
-		element = element.Next() {
-		
-		shape := element.Value.(Shape)
-		if !shape.Dirty() && !force { continue }
-
-		shape.draw(window.artist)
-		shape.SetClean()
-		updated = true
-	}
-
-	if updated {
-		window.artist.Draw(window.window)
-	}
 	window.window.SwapBuffers()
+}
+
+/* Push adds a shape to the window's root group.
+ */
+func (window *Window) Push (shape Shape) {
+	window.root.Push(shape)
+}
+
+/* Pop removes the last added shape from the window's root group.
+ */
+func (window *Window) Pop () (shape Shape) {
+	return window.root.Pop()
 }
