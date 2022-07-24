@@ -20,12 +20,14 @@ func NewShapePath (
 func (shape *ShapePath) Push (point Point) {
 	shape.points = append(shape.points, point)
 	shape.calculateBounds()
+	shape.SetDirty()
 }
 
 func (shape *ShapePath) Pop () (point Point) {
 	point = shape.points[len(shape.points) - 1]
 	shape.points = shape.points[:len(shape.points) - 1]
 	shape.calculateBounds()
+	shape.SetDirty()
 	return
 }
 
