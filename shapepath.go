@@ -1,5 +1,6 @@
 package naiad
 
+import "github.com/faiface/pixel"
 import "github.com/faiface/pixel/imdraw"
 
 type ShapePath struct {
@@ -35,7 +36,7 @@ func (polygon *ShapePath) Kind () (kind ShapeKind) {
 	return ShapeKindPath
 }
 
-func (shape *ShapePath) draw (artist *imdraw.IMDraw) {
+func (shape *ShapePath) draw (artist *imdraw.IMDraw, target pixel.Target) {
 	artist.SetMatrix(shape.matrix)
 
 	for _, point := range shape.points {

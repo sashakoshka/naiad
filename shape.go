@@ -41,7 +41,8 @@ type Dirty struct {
 type Shape interface {
 	/* draw draws the shape onto the specified target.
 	 */
-	draw (artist *imdraw.IMDraw)
+	// TODO: only include target, have each shape create its own artist.
+	draw (artist *imdraw.IMDraw, target pixel.Target)
 
 	/* Kind returns what kind of shape it is.
 	 */

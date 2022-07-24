@@ -1,5 +1,6 @@
 package naiad
 
+import "github.com/faiface/pixel"
 import "github.com/faiface/pixel/imdraw"
 import "github.com/faiface/pixel/pixelgl"
 
@@ -8,6 +9,9 @@ type ShapeGroup struct {
 	shapeBase
 	shapes []Shape
 	canvas *pixelgl.Canvas
+	calculatedW float64
+	calculatedH float64
+	artist *imdraw.IMDraw
 }
 
 func NewShapeGroup (
@@ -17,6 +21,7 @@ func NewShapeGroup (
 ) {
 	group = &ShapeGroup { }
 	group.SetPosition(V(x, y))
+	group.artist = imdraw.New(nil)
 	return
 }
 
@@ -40,12 +45,31 @@ func (group *ShapeGroup) Kind () (kind ShapeKind) {
 	return ShapeKindGroup
 }
 
-func (group *ShapeGroup) draw (artist *imdraw.IMDraw) {
+func (group *ShapeGroup) draw (artist *imdraw.IMDraw, target pixel.Target) {
+	// if we don't have a canvas, or the canvas is not the size we need,
+	// create a new one.
+	needNewCanvas :=
+		group.canvas == nil ||
+		group.canvas.Bounds().Max.X != group.calculatedW ||
+		group.canvas.Bounds().Max.Y != group.calculatedH
 	
-	// TODO: if internal buffer is nil, or bounds does not match, resize
-	// buffer and force redraw.
-	// TODO: if this groups is dirty, range over shapes redraw all of them
-	// to internal buffer.
+	if needNewCanvas {
+		group.SetDirty()
+		group.canvas = pixelgl.NewCanvas (pixel.R (
+			0, 0,
+			group.calculatedW,
+			group.calculatedH))
+	}
+
+	// draw all shapes
+	if group.Dirty () {
+		for _, shape := range group.shapes {
+			shape.draw(artist, target)
+			shape.SetClean()
+		}
+	}
+
+	group.artist.Draw(target)
 }
 
 func (group *ShapeGroup) calculateBounds () {
@@ -63,6 +87,9 @@ func (group *ShapeGroup) calculateBounds () {
 		group.contractMin(shapeMin)
 		group.expandMax(shapeMax)
 	}
+
+	group.calculatedW = group.max.Y() - group.min.Y()
+	group.calculatedH = group.max.Y() - group.min.Y()
 
 	group.calculateTransform()
 }
