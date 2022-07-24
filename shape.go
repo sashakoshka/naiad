@@ -37,10 +37,6 @@ type Dirty struct {
 	clean bool
 }
 
-type Transform struct {
-	matrix pixel.Matrix
-}
-
 type Shape interface {
 	/* draw draws the shape onto the specified target.
 	 */
@@ -69,8 +65,8 @@ type Shape interface {
 }
 
 type shapeBase struct {
-	Transform
 	Style
+	matrix pixel.Matrix
 
 	min     Vector
 	max     Vector
@@ -78,6 +74,16 @@ type shapeBase struct {
 	realMax Vector
 	
 	clean bool
+}
+
+func (base *shapeBase) SetThickness (thickness float64) {
+	base.Style.thickness = thickness
+	base.SetDirty()
+}
+
+func (base *shapeBase) SetOpen (open bool) {
+	base.Style.open = open
+	base.SetDirty()
 }
 
 func (base *shapeBase) contractMin (min Vector) {
@@ -101,6 +107,8 @@ func (base *shapeBase) expandMax (max Vector) {
 }
 
 func (base *shapeBase) calculateRealBounds () {
+	// TODO: this will not work for rotation. need to go over all points and
+	// project them, then find bounds again.
 	base.realMax = vFromPixel(base.matrix.Project((base.max.pixellate())))
 	base.realMin = vFromPixel(base.matrix.Project((base.min.pixellate())))
 }
