@@ -36,16 +36,16 @@ func (group *ShapeGroup) Pop () (shape Shape) {
 	return
 }
 
-func (polygon *ShapeGroup) Kind () (kind ShapeKind) {
-	return ShapeKindPath
+func (group *ShapeGroup) Kind () (kind ShapeKind) {
+	return ShapeKindGroup
 }
 
-func (shape *ShapeGroup) draw (artist *imdraw.IMDraw) {
+func (group *ShapeGroup) draw (artist *imdraw.IMDraw) {
 	
 	// TODO: if internal buffer is nil, or bounds does not match, resize
 	// buffer and force redraw.
-	// TODO: range over shapes redraw all of
-	// them to internal buffer.
+	// TODO: if this groups is dirty, range over shapes redraw all of them
+	// to internal buffer.
 }
 
 func (group *ShapeGroup) calculateBounds () {

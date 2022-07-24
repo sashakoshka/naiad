@@ -9,6 +9,7 @@ type ShapeKind int
 const (
 	ShapeKindPath = iota
 	ShapeKindText
+	ShapeKindGroup
 )
 
 type LineCap int
