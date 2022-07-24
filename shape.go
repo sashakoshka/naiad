@@ -139,6 +139,7 @@ func (base *shapeBase) recalculateTransform () {
 	base.matrix = pixel.IM.Moved (
 		pixel.V(base.position.X(), base.position.Y()))
 
+	// TODO: take border width into account
 	// TODO: this will not work for rotation. need to go over all points and
 	// project them, then find bounds again.
 	base.realMax = vFromPixel(base.matrix.Project((base.max.pixellate())))
