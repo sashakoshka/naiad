@@ -59,5 +59,5 @@ func (group *ShapeGroup) calculateBounds () {
 		group.expandMax(shapeMax)
 	}
 
-	group.recalculateTransform()
+	group.calculateTransform()
 }

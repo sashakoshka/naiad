@@ -80,19 +80,19 @@ type shapeBase struct {
 
 func (base *shapeBase) SetPosition (position Vector) {
 	base.position = position
-	base.recalculateTransform()
+	base.calculateTransform()
 	base.SetDirty()
 }
 
 func (base *shapeBase) SetX (x float64) {
 	base.position.SetX(x)
-	base.recalculateTransform()
+	base.calculateTransform()
 	base.SetDirty()
 }
 
 func (base *shapeBase) SetY (y float64) {
 	base.position.SetY(y)
-	base.recalculateTransform()
+	base.calculateTransform()
 	base.SetDirty()
 }
 
@@ -134,7 +134,7 @@ func (base *shapeBase) expandMax (max Vector) {
 	}
 }
 
-func (base *shapeBase) recalculateTransform () {
+func (base *shapeBase) calculateTransform () {
 	// recalculate matrix
 	base.matrix = pixel.IM.Moved (
 		pixel.V(base.position.X(), base.position.Y()))
