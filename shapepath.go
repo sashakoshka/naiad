@@ -64,5 +64,5 @@ func (shape *ShapePath) calculateBounds () {
 		shape.expandMax(point.Vector)
 	}
 
-	shape.calculateRealBounds()
+	shape.recalculateTransform()
 }
