@@ -89,21 +89,27 @@ func (base *shapeBase) setParent (parent Shape) {
 }
 
 func (base *shapeBase) SetPosition (position Vector) {
-	base.position = position
+	if base.position != position {
+		base.position = position
+		base.SetDirty()
+	}
 	base.calculateTransform()
-	base.SetDirty()
 }
 
 func (base *shapeBase) SetX (x float64) {
-	base.position.SetX(x)
+	if base.position.X() != x {
+		base.position.SetX(x)
+		base.SetDirty()
+	}
 	base.calculateTransform()
-	base.SetDirty()
 }
 
 func (base *shapeBase) SetY (y float64) {
-	base.position.SetY(y)
+	if base.position.Y() != y {
+		base.position.SetY(y)
+		base.SetDirty()
+	}
 	base.calculateTransform()
-	base.SetDirty()
 }
 
 func (base *shapeBase) X () (x float64) {
@@ -115,11 +121,13 @@ func (base *shapeBase) Y () (y float64) {
 }
 
 func (base *shapeBase) SetThickness (thickness float64) {
+	if base.Style.thickness == thickness { return }
 	base.Style.thickness = thickness
 	base.SetDirty()
 }
 
 func (base *shapeBase) SetOpen (open bool) {
+	if base.Style.open == open { return }
 	base.Style.open = open
 	base.SetDirty()
 }

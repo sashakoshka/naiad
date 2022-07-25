@@ -77,5 +77,4 @@ func (shape *ShapePath) calculateBounds () {
 	}
 
 	shape.calculateTransform()
-	shape.SetClean()
 }

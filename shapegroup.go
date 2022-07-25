@@ -23,6 +23,7 @@ func NewShapeGroup (
 }
 
 func (group *ShapeGroup) SetBounds (max Vector) {
+	if group.max == max { return }
 	group.max = max
 	group.SetDirty()
 }
@@ -31,6 +32,7 @@ func (group *ShapeGroup) Push (shape Shape) {
 	shape.setParent(group)
 	group.shapes = append(group.shapes, shape)
 	group.SetDirty()
+	shape.SetDirty()
 }
 
 func (group *ShapeGroup) Pop () (shape Shape) {
@@ -38,6 +40,7 @@ func (group *ShapeGroup) Pop () (shape Shape) {
 	shape = group.shapes[len(group.shapes) - 1]
 	group.shapes = group.shapes[:len(group.shapes) - 1]
 	group.SetDirty()
+	shape.SetDirty()
 	return
 }
 
