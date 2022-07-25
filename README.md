@@ -9,14 +9,27 @@ It is as cross platform as pixel is, which is to say, very. This library is not
 designed to be used in conjunction with pixel, it abstracts it away. Eventually
 it will just use raw OpenGL as a backend.
 
-## Warning
+The reason this exists is because the browser DOM is very useful for building
+user interfaces because you can just make things and the browser abstracts away
+all the rendering logic. However, it is too high level, to resource hungry, too
+"document" oriented, and has far too much vestigial hogwash to make practical
+sense for buidling native desktop applications.
+
+Naiad is designed to let you have your cake and eat it too. You have full
+freedom to create whatever ridiculous shapes you want, with the ease of working
+with a DOM, and the assurance that your program will not end up being a 127
+megabyte, cpu eating, ram eating piece of garbage.
+
+## Disclaimer
 
 It is not done yet dont use it.
 
 ## Diagram that looks more complicated than it actually is
 
 On-screen shapes in Naiad are structured using groups. These groups contain
-paths (and soon text as well).
+paths (and soon text as well). At the top there is a root group which you are
+not allowed to mess with, but you can add things to it and remove things from
+it through methods defined on the window object.
 
 ```
           ┌────────┐
