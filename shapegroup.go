@@ -4,7 +4,6 @@ import "image/color"
 import "github.com/faiface/pixel"
 import "github.com/faiface/pixel/pixelgl"
 
-// TODO: put this at the root of the window instead of a list of shapes.
 type ShapeGroup struct {
 	shapeBase
 	shapes []Shape

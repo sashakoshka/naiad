@@ -40,7 +40,6 @@ type Dirty struct {
 type Shape interface {
 	/* draw draws the shape onto the specified target.
 	 */
-	// TODO: only include target, have each shape create its own artist.
 	draw (target pixel.Target)
 
 	/* Kind returns what kind of shape it is.
@@ -62,8 +61,7 @@ type Shape interface {
 	/* GetBounds returns the shape's bounds, mapped to real coordinates on
 	 * the screen.
 	 */
-	// TODO: rename to Bounds()
-	GetBounds () (min, max Vector)
+	Bounds () (min, max Vector)
 
 	/* setParent shets the shape's parent.
 	 */
@@ -166,7 +164,7 @@ func (base *shapeBase) calculateTransform () {
 	base.realMax = vFromPixel(maxVector)
 }
 
-func (base *shapeBase) GetBounds () (min, max Vector) {
+func (base *shapeBase) Bounds () (min, max Vector) {
 	return base.realMin, base.realMax
 }
 
