@@ -39,7 +39,9 @@ type Shape interface {
 
 	// TODO: have a method that takes in mouse coordinates, unprojects them,
 	// and returns what shapes (including itself, if need be) that are being
-	// hovered over by the mouse.
+	// hovered over by the mouse. Have an argument that determines if the
+	// method should recurse into child objects so that a breadth-first
+	// search can be accomplished.
 
 	// setParent sets the shape's parent. This does not actually parent the
 	// shape - it should be called by the parent as the shape is being
@@ -57,10 +59,8 @@ type shapeBase struct {
 	matrix   pixel.Matrix
 	position Vector
 
-	min     Vector
-	max     Vector
-	realMin Vector
-	realMax Vector
+	min Vector
+	max Vector
 	
 	clean bool
 }
@@ -143,9 +143,7 @@ func (base *shapeBase) SetClean () {
 // shapes such as paths, the min bound may be in a different spot due to things
 // such as stroke thickness and points with negative coordinates.
 func (base *shapeBase) Bounds () (min, max Vector) {
-	// TODO: we might not even need these properties. Should probably just
-	// return the normal bounds.
-	return base.realMin, base.realMax
+	return base.min, base.max
 }
 
 // setParent sets the shape's parent. This does not actually parent the shape -
@@ -181,22 +179,4 @@ func (base *shapeBase) calculateTransform () {
 	// recalculate matrix
 	base.matrix = pixel.IM.Moved (
 		pixel.V(base.position.X(), base.position.Y()))
-
-	// TODO: this will not work for rotation. need to go over all points and
-	// project them, then find bounds again.
-	minVector := base.matrix.Project(base.min.pixellate())
-	maxVector := base.matrix.Project(base.max.pixellate())
-
-	// TODO: this isn't true anymore. We don't need to account for border
-	// thickness because the bounds will only be used for mouse input
-	// detection.
-	
-	// the shape bounds need to encompass everything that gets drawn - so we
-	// must account for border thickness.
-	thicknessOffset := base.Thickness() / 2
-	minVector = minVector.Add(pixel.V(-thicknessOffset, -thicknessOffset))
-	maxVector = minVector.Add(pixel.V( thicknessOffset,  thicknessOffset))
-	
-	base.realMin = vFromPixel(minVector)
-	base.realMax = vFromPixel(maxVector)
 }
