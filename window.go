@@ -5,6 +5,7 @@ import "image/color"
 import "github.com/faiface/pixel"
 import "github.com/faiface/pixel/pixelgl"
 
+// Window represents an on-screen window.
 type Window struct {
 	title       string
 	icon        []image.Image
@@ -29,9 +30,8 @@ type Window struct {
 	root   *ShapeGroup
 }
 
-/* Open brings the window on screen. If the window has already been opened, this
- * method does nothing.
- */
+// Open brings the window on screen. If the window has already been opened, this
+// method does nothing.
 func (window *Window) Open () (err error) {
 	if window.window != nil { return }
 
@@ -62,9 +62,8 @@ func (window *Window) Open () (err error) {
 	return
 }
 
-/* draw redraws all shapes that need to be redrawn. If force is set to true, it
- * will clear the window and redraw all shapes regardless.
- */
+// draw redraws all shapes that need to be redrawn. If force is set to true, it
+// will clear the window and redraw all shapes regardless.
 func (window *Window) draw () {
 	if window.window == nil { return }
 
@@ -76,14 +75,12 @@ func (window *Window) draw () {
 	window.window.SwapBuffers()
 }
 
-/* Push adds a shape to the window's root group.
- */
+// Push adds a shape to the window's root group.
 func (window *Window) Push (shape Shape) {
 	window.root.Push(shape)
 }
 
-/* Pop removes the last added shape from the window's root group.
- */
+// Pop removes the last added shape from the window's root group.
 func (window *Window) Pop () (shape Shape) {
 	return window.root.Pop()
 }

@@ -2,10 +2,9 @@ package naiad
 
 import "time"
 
-/* Await waits for an event to occur, or the timeout to elapse. It then redraws
- * the screen if needed. If the timeout is zero, there won't actually be a
- * timeout and it will just wait forever for an event.
- */
+// Await waits for an event to occur, or the timeout to elapse. It then redraws
+// the screen if needed. If the timeout is zero, there won't actually be a
+// timeout and it will just wait forever for an event.
 func (window *Window) Await (timeout time.Duration) {
 	if window.window == nil { return }
 	window.draw()
@@ -13,8 +12,7 @@ func (window *Window) Await (timeout time.Duration) {
 	window.processEvents()
 }
 
-/* Poll polls events, and redraws the screen if needed. This is non-blocking.
- */
+// Poll polls events, and redraws the screen if needed. This is non-blocking.
 func (window *Window) Poll () {
 	if window.window == nil { return }
 	window.draw()
@@ -22,9 +20,8 @@ func (window *Window) Poll () {
 	window.processEvents()
 }
 
-/* processEvents reacts to any events that have been recieved, and redraws the
- * screen if needed
- */
+// processEvents reacts to any events that have been recieved, and redraws the
+// screen if needed
 func (window *Window) processEvents () {
 	newSize := vFromPixel(window.window.Bounds().Max)
 	if newSize != window.size {
@@ -33,8 +30,7 @@ func (window *Window) processEvents () {
 	window.size = newSize
 }
 
-/* detectMouseOver detects which shape is being hovered over by the mouse.
- */
+// detectMouseOver detects which shape is being hovered over by the mouse.
 // func (window *Window) detectMouseOver () {
 	// TODO: recurse through all shapes, and store a list of shapes that
 	// have mouse focus in order from shallowest to deepest.

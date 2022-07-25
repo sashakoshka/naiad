@@ -1,14 +1,45 @@
 package naiad
 
+import "image/color"
 import "github.com/faiface/pixel"
 import "github.com/faiface/pixel/imdraw"
 
+// LineCap determines how corners and ends of lines should look. Each point has
+// one of these values.
+type LineCap int
+
+const (
+	LineCapNone = iota
+	LineCapSharp
+	LineCapRound
+)
+
+// Point represents a single point on a path. It has information about its
+// position, color, and line cap type.
+type Point struct {
+	Vector
+	color color.Color
+	cap   LineCap
+}
+
+// P provides a quick way to create a point given a position, color, and line
+// cap type.
+func P (x, y float64, color color.Color, cap LineCap) (point Point) {
+	point.x = x
+	point.y = y
+	point.color = color
+	point.cap   = cap
+	return
+}
+
+// ShapePath is a polygon (or line) composed of a set of points.
 type ShapePath struct {
 	shapeBase
 	points []Point
 	artist *imdraw.IMDraw
 }
 
+// NewShapePath creates a new path at the given x and y coordinates.
 func NewShapePath (
 	x, y float64,
 ) (
@@ -19,12 +50,14 @@ func NewShapePath (
 	return
 }
 
+// Push adds a point to the shape.
 func (shape *ShapePath) Push (point Point) {
 	shape.points = append(shape.points, point)
 	shape.calculateBounds()
 	shape.SetDirty()
 }
 
+// Pop removes the last point from the shape and returns it.
 func (shape *ShapePath) Pop () (point Point) {
 	point = shape.points[len(shape.points) - 1]
 	shape.points = shape.points[:len(shape.points) - 1]
@@ -33,10 +66,13 @@ func (shape *ShapePath) Pop () (point Point) {
 	return
 }
 
+// Kind returns ShapeKindPath
 func (shape *ShapePath) Kind () (kind ShapeKind) {
 	return ShapeKindPath
 }
 
+// draw draws the shape onto the specified target. Paths don't make use of the
+// clean/dirty flag yet, but this resets it anyway.
 func (shape *ShapePath) draw (target pixel.Target) {
 	defer shape.SetClean()
 
@@ -62,6 +98,8 @@ func (shape *ShapePath) draw (target pixel.Target) {
 	shape.artist.Draw(target)
 }
 
+// calculateBounds iterates through all points and determines the bounds of the
+// shape relative to its origin.
 func (shape *ShapePath) calculateBounds () {
 	if len(shape.points) > 0 {
 		shape.min = shape.points[0].Vector

@@ -4,12 +4,18 @@ import "image/color"
 import "github.com/faiface/pixel"
 import "github.com/faiface/pixel/pixelgl"
 
+// ShapeGroup is a group containing other shapes. It has its own internal buffer
+// that the shapes inside of it will be drawn to, reducing the need for redraws.
+// It should be used to group objects composed of several different shapes
+// together, especially if they move together.
 type ShapeGroup struct {
 	shapeBase
 	shapes []Shape
 	canvas *pixelgl.Canvas
 }
 
+// NewShapeGroup creates a new shape group with the specified position and
+// bounds.
 func NewShapeGroup (
 	x, y float64,
 	w, h float64,
@@ -22,12 +28,14 @@ func NewShapeGroup (
 	return
 }
 
+// SetBounds sets the size of the shape group.
 func (group *ShapeGroup) SetBounds (max Vector) {
 	if group.max == max { return }
 	group.max = max
 	group.SetDirty()
 }
 
+// Push adds a new shape to the shape group.
 func (group *ShapeGroup) Push (shape Shape) {
 	shape.setParent(group)
 	group.shapes = append(group.shapes, shape)
@@ -35,6 +43,7 @@ func (group *ShapeGroup) Push (shape Shape) {
 	shape.SetDirty()
 }
 
+// Pop removes the last shape from the shape group, and returns it.
 func (group *ShapeGroup) Pop () (shape Shape) {
 	shape.setParent(nil)
 	shape = group.shapes[len(group.shapes) - 1]
@@ -44,10 +53,15 @@ func (group *ShapeGroup) Pop () (shape Shape) {
 	return
 }
 
+// Kind returns ShapeKindGroup.
 func (group *ShapeGroup) Kind () (kind ShapeKind) {
 	return ShapeKindGroup
 }
 
+// draw draws the shape group onto the specified target, and marks the group as
+// clean. If the group is marked as dirty, it will redraw all shapes inside of
+// it. Otherwise, it will just draw what's in its buffer. This method
+// automatically resizes the shape group's internal buffer as needed.
 func (group *ShapeGroup) draw (target pixel.Target) {
 	defer group.SetClean()
 	

@@ -3,8 +3,7 @@ package naiad
 import "image"
 import "github.com/faiface/pixel"
 
-/* SetTitle sets the window title.
- */
+// SetTitle sets the window title.
 func (window *Window) SetTitle (title string) {
 	if window.window != nil {
 		window.window.SetTitle(title)
@@ -13,9 +12,8 @@ func (window *Window) SetTitle (title string) {
 	window.title = title
 }
 
-/* SetIcon takes in different resolutions of the same icon (all images) and sets
- * the window icon. This will not do anything after open has been called.
- */
+// SetIcon takes in different resolutions of the same icon (all images) and sets
+// the window icon. This will not do anything after open has been called.
 func (window *Window) SetIcon (icon ...image.Image) {
 	if window.window != nil {
 		return
@@ -24,8 +22,7 @@ func (window *Window) SetIcon (icon ...image.Image) {
 	window.icon = icon
 }
 
-/* SetSize sets the size of the window to the dimensions specified by a vector.
- */
+// SetSize sets the size of the window to the dimensions specified by a vector.
 func (window *Window) SetSize (size Vector) {
 	if window.window != nil {
 		window.window.SetBounds (pixel.R (
@@ -37,15 +34,13 @@ func (window *Window) SetSize (size Vector) {
 	window.size = size
 }
 
-/* Size returns the bounds of the window as a rectangle
- */
+// Size returns the bounds of the window as a rectangle
 func (window *Window) Size () (size Vector) {
 	return window.size
 }
 
-/* SetTransparent sets whether or not the window has a transparent framebuffer,
- * if supported.
- */
+// SetTransparent sets whether or not the window has a transparent framebuffer,
+// if supported.
 func (window *Window) SetTransparent (transparent bool) {
 	if window.window != nil { return }
 	window.transparent = transparent

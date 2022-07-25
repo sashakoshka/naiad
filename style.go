@@ -1,5 +1,7 @@
 package naiad
 
+// TODO: completely remove this file.
+
 type Style struct {
 	thickness float64
 	open      bool
