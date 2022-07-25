@@ -76,13 +76,6 @@ func (group *ShapeGroup) draw (target pixel.Target) {
 		}
 	}
 
-	// TODO: remove
-	// imd := imdraw.New(nil)
-	// imd.Color = pixel.RGB(1, 0, 0)
-	// imd.Push(pixel.V(10, 10))
-	// imd.Circle(1000, 0)
-	// imd.Draw(group.canvas)
-
 	// draw group's canvas onto target
 	// jesus christ this is ugly. i wish pixel didn't have a coordinate
 	// system dragged out from the deepest layer of hell.

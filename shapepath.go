@@ -38,6 +38,8 @@ func (shape *ShapePath) Kind () (kind ShapeKind) {
 }
 
 func (shape *ShapePath) draw (target pixel.Target) {
+	defer shape.SetClean()
+
 	if shape.artist == nil {
 		shape.artist = imdraw.New(nil)
 	}
@@ -56,6 +58,8 @@ func (shape *ShapePath) draw (target pixel.Target) {
 	} else {
 		shape.artist.Polygon(shape.thickness)
 	}
+	
+	shape.artist.Draw(target)
 }
 
 func (shape *ShapePath) calculateBounds () {
