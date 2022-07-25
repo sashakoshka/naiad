@@ -25,13 +25,11 @@ func (window *Window) Poll () {
  */
 func (window *Window) processEvents () {
 	newSize := vFromPixel(window.window.Bounds().Max)
-	sizeChanged := newSize != window.size
-	if sizeChanged {
+	if newSize != window.size {
 		window.root.SetBounds(newSize)
 	}
 
-	// TODO: is the force parameter needed?
-	window.draw(sizeChanged)
+	window.draw()
 	window.size = newSize
 }
 

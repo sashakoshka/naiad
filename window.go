@@ -65,10 +65,10 @@ func (window *Window) Open () (err error) {
 /* draw redraws all shapes that need to be redrawn. If force is set to true, it
  * will clear the window and redraw all shapes regardless.
  */
-func (window *Window) draw (force bool) {
+func (window *Window) draw () {
 	if window.window == nil { return }
 
-	if window.root.Dirty() || force {
+	if window.root.Dirty() {
 		window.window.Clear(color.RGBA { 0, 0, 0, 0 })	
 		window.root.draw(window.window)
 	}
