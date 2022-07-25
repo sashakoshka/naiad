@@ -37,11 +37,12 @@ type Shape interface {
 	// coordinates.
 	Bounds () (min, max Vector)
 
-	// TODO: have a method that takes in mouse coordinates, unprojects them,
-	// and returns what shapes (including itself, if need be) that are being
-	// hovered over by the mouse. Have an argument that determines if the
-	// method should recurse into child objects so that a breadth-first
-	// search can be accomplished.
+	// Contains takes in mouse coordinates, and recursively checks if those
+	// coordinates are contained in the shape or any of its children. It
+	// returns a slice of all shapes (including itself) that the points are
+	// contained within. If the position is not inside the shape, it should
+	// immediately stop, return nil, and not recurse into anything else.
+	Contains (position Vector) (shapes []Shape)
 
 	// setParent sets the shape's parent. This does not actually parent the
 	// shape - it should be called by the parent as the shape is being
