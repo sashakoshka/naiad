@@ -9,7 +9,7 @@ import "github.com/faiface/pixel/imdraw"
 type LineCap int
 
 const (
-	LineCapNone = iota
+	LineCapNone LineCap = iota
 	LineCapSharp
 	LineCapRound
 )

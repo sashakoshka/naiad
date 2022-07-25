@@ -7,7 +7,7 @@ import "github.com/faiface/pixel"
 type ShapeKind int
 
 const (
-	ShapeKindPath = iota
+	ShapeKindPath ShapeKind = iota
 	ShapeKindText
 	ShapeKindGroup
 )
