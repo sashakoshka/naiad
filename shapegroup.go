@@ -78,8 +78,8 @@ func (group *ShapeGroup) Contains (position Vector) (shapes []Shape) {
 		childContains := shape.Contains(vFromPixel(relativePosition))
 		
 		if len(childContains) > 0 {
-			// there can only be one shape - so we append its
-			// results to the list and return.
+			// there can only be one hovered shape - so we append
+			// its results to the list and return.
 			shapes = append(shapes, childContains...)
 			return
 		}

@@ -28,17 +28,15 @@ func (window *Window) processEvents () {
 		window.root.SetBounds(newSize)
 	}
 	window.size = newSize
+
+	window.mousePreviousPosition = window.mousePosition
+	window.mousePosition         = vFromPixel(window.window.MousePosition())
+	if window.mousePosition != window.mousePreviousPosition {
+		window.detectMouseOver()
+	}
 }
 
 // detectMouseOver detects which shape is being hovered over by the mouse.
-// func (window *Window) detectMouseOver () {
-	// TODO: recurse through all shapes, and store a list of shapes that
-	// have mouse focus in order from shallowest to deepest.
-	// recursing through all shapes should be incredibly fast. we just need
-	// to follow the mouse - if a shape is not under the mouse pointer, do
-	// not go down that path. we will just be taking a liear path down the
-	// tree and storing a trace of that basically. O(log(n)) baby!
-	// we also need to "unravel" the cursor position with matrices. for
-	// every group we enter we need to unproject the cursor position by its
-	// matrix.
-// }
+func (window *Window) detectMouseOver () {
+	window.mouseHover = window.root.Contains(window.mousePosition)
+}

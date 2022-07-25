@@ -24,6 +24,11 @@ type Window struct {
 	noVsync     bool
 	maximized   bool
 
+	mousePosition         Vector
+	mousePreviousPosition Vector
+	
+	mouseHover []Shape
+
 	boundsDirty bool
 	
 	window *pixelgl.Window
