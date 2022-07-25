@@ -38,6 +38,7 @@ func (shape *ShapePath) Kind () (kind ShapeKind) {
 }
 
 func (shape *ShapePath) draw (target pixel.Target) {
+	println("amongus")
 	defer shape.SetClean()
 
 	if shape.artist == nil {
