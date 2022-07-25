@@ -52,8 +52,6 @@ type Shape interface {
 // shapeBase is a struct which should be included in all shapes. It defines some
 // basic behaviors and properties such as position, bounds, and dirtiness.
 type shapeBase struct {
-	Style
-
 	parent Shape
 	
 	matrix   pixel.Matrix
@@ -102,20 +100,6 @@ func (base *shapeBase) Y () (y float64) {
 	return base.position.Y()
 }
 
-
-// TODO: remove the style struct. Shapes are too different and need their own
-// independent set of styling.
-func (base *shapeBase) SetThickness (thickness float64) {
-	if base.Style.thickness == thickness { return }
-	base.Style.thickness = thickness
-	base.SetDirty()
-}
-
-func (base *shapeBase) SetOpen (open bool) {
-	if base.Style.open == open { return }
-	base.Style.open = open
-	base.SetDirty()
-}
 
 // Dirty returns wether the shape is dirty or not.
 func (base *shapeBase) Dirty () (isDirty bool) {

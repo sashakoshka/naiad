@@ -37,6 +37,8 @@ type ShapePath struct {
 	shapeBase
 	points []Point
 	artist *imdraw.IMDraw
+	thickness float64
+	open      bool
 }
 
 // NewShapePath creates a new path at the given x and y coordinates.
@@ -69,6 +71,32 @@ func (shape *ShapePath) Pop () (point Point) {
 // Kind returns ShapeKindPath
 func (shape *ShapePath) Kind () (kind ShapeKind) {
 	return ShapeKindPath
+}
+
+// SetThickness sets the stroke thickness of the shape. If the thickness is 0,
+// the shape will be filled instead.
+func (shape *ShapePath) SetThickness (thickness float64) {
+	if shape.thickness == thickness { return }
+	shape.thickness = thickness
+	shape.SetDirty()
+}
+
+// SetOpen sets whether or not the shape is open on one end. Set this to false
+// to create a polyline as opposed to a polygon.
+func (shape *ShapePath) SetOpen (open bool) {
+	if shape.open == open { return }
+	shape.open = open
+	shape.SetDirty()
+}
+
+// Thickness returns the stroke thickness of the shape.
+func (shape *ShapePath) Thickness () (thickness float64) {
+	return shape.thickness
+}
+
+// Open returns whether or not the shape is open on one end.
+func (shape *ShapePath) Open () (closed bool) {
+	return shape.open
 }
 
 // draw draws the shape onto the specified target. Paths don't make use of the
