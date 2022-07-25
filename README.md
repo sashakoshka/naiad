@@ -68,14 +68,14 @@ Point     Point
   │  Path   │
   ├─┐     ┌─┤
   └─┴─────┴─┘
-Point      Point
+Point     Point
 ```
 
 Groups are very cool because they each have their own internal buffer, so
 objects inside of them don't need to redraw themselves all the dang time.
 
 
-# Epic checklist
+## Epic checklist
 
 - [X] Paths
 - [X] Shape Groups

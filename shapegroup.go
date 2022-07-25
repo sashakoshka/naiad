@@ -58,6 +58,35 @@ func (group *ShapeGroup) Kind () (kind ShapeKind) {
 	return ShapeKindGroup
 }
 
+// Contains takes in mouse coordinates, and determines if they are inside of the
+// shape. If it is, the returned slice will have one item pointing to this
+// shape. If not, the returned slice will be nill.
+func (group *ShapeGroup) Contains (position Vector) (shapes []Shape) {
+	relativePosition := group.matrix.Unproject(position.pixellate())
+	bounds := pixel.R(group.min.x, group.min.y, group.max.x, group.max.y)
+	
+	if bounds.Contains(relativePosition) {
+		shapes = append(shapes, Shape(group))
+	} else {
+		return
+	}
+
+	// range backward over shapes, becasue we want to get the top shape
+	// that's in contact with the position.
+	for index := len(group.shapes) - 1; index >= 0; index -- {
+		shape := group.shapes[index]
+		childContains := shape.Contains(vFromPixel(relativePosition))
+		
+		if len(childContains) > 0 {
+			// there can only be one shape - so we append its
+			// results to the list and return.
+			shapes = append(shapes, childContains...)
+			return
+		}
+	}
+	return
+}
+
 // draw draws the shape group onto the specified target, and marks the group as
 // clean. If the group is marked as dirty, it will redraw all shapes inside of
 // it. Otherwise, it will just draw what's in its buffer. This method

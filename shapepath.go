@@ -73,6 +73,19 @@ func (shape *ShapePath) Kind () (kind ShapeKind) {
 	return ShapeKindPath
 }
 
+// Contains takes in mouse coordinates, and determines if they are inside of the
+// shape. If it is, the returned slice will have one item pointing to this
+// shape. If not, the returned slice will be nill.
+func (shape *ShapePath) Contains (position Vector) (shapes []Shape) {
+	relativePosition := shape.matrix.Unproject(position.pixellate())
+	bounds := pixel.R(shape.min.x, shape.min.y, shape.max.x, shape.max.y)
+	
+	if bounds.Contains(relativePosition) {
+		shapes = append(shapes, Shape(shape))
+	}
+	return
+}
+
 // SetThickness sets the stroke thickness of the shape. If the thickness is 0,
 // the shape will be filled instead.
 func (shape *ShapePath) SetThickness (thickness float64) {
