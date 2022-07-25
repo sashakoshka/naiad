@@ -68,11 +68,8 @@ func (window *Window) Open () (err error) {
 func (window *Window) draw (force bool) {
 	if window.window == nil { return }
 
-	if force {
-		window.window.Clear(color.RGBA { 0, 0, 0, 0 })
-	}
-
 	if window.root.Dirty() || force {
+		window.window.Clear(color.RGBA { 0, 0, 0, 0 })	
 		window.root.draw(window.window)
 	}
 	
