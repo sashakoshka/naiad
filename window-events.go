@@ -8,6 +8,7 @@ import "time"
  */
 func (window *Window) Await (timeout time.Duration) {
 	if window.window == nil { return }
+	window.draw()
 	window.window.UpdateInputWait(timeout)
 	window.processEvents()
 }
@@ -16,6 +17,7 @@ func (window *Window) Await (timeout time.Duration) {
  */
 func (window *Window) Poll () {
 	if window.window == nil { return }
+	window.draw()
 	window.window.Update()
 	window.processEvents()
 }
@@ -28,8 +30,6 @@ func (window *Window) processEvents () {
 	if newSize != window.size {
 		window.root.SetBounds(newSize)
 	}
-
-	window.draw()
 	window.size = newSize
 }
 
