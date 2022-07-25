@@ -26,7 +26,7 @@ type Window struct {
 	boundsDirty bool
 	
 	window *pixelgl.Window
-	root   ShapeGroup
+	root   *ShapeGroup
 }
 
 /* Open brings the window on screen. If the window has already been opened, this
@@ -40,7 +40,7 @@ func (window *Window) Open () (err error) {
 		icon = append(icon, pixel.PictureDataFromImage(size))
 	}
 	
-	window.root.SetBounds(window.size)
+	window.root = NewShapeGroup(0, 0, window.size.X(), window.size.Y())
 
 	window.window, err = pixelgl.NewWindow (pixelgl.WindowConfig {
 		Title:  window.title,
