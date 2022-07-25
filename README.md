@@ -11,9 +11,9 @@ it will just use raw OpenGL as a backend.
 
 The reason this exists is because the browser DOM is very useful for building
 user interfaces because you can just make things and the browser abstracts away
-all the rendering logic. However, it is too high level, to resource hungry, too
-"document" oriented, and has far too much vestigial hogwash to make practical
-sense for buidling native desktop applications.
+all the rendering logic. However, it is inherently resource intensive, has too
+much vestigial nonsense built into it, and it wasn't even designed for
+constructing user interfaces (being more oriented towards text documents).
 
 Naiad is designed to let you have your cake and eat it too. You have full
 freedom to create whatever ridiculous shapes you want, with the ease of working
