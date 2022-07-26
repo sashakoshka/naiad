@@ -1,5 +1,7 @@
 # naiad
 
+[![A+ Golang report card.](https://img.shields.io/badge/go%20report-A+-brightgreen.svg?style=flat)](https://goreportcard.com/report/github.com/sashakoshka/naiad)
+
 ![Naiad logo](assets/logo.png)
 
 Naiad lets you create windows with shapes in them. It is designed for creating
