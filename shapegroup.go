@@ -79,9 +79,35 @@ func (group *ShapeGroup) PopBottom () (shape Shape) {
 	return
 }
 
+// indexOf returns the index of the specified shape. If the shape is not in the
+// group, it returns false for exists, and the index should be ingored.
+func (group *ShapeGroup) indexOf (shape Shape) (index int, exists bool) {
+	var checkShape Shape
+	for index, checkShape = range group.shapes {
+		if checkShape == shape {
+			exists = true
+			return
+		}
+	} 
+
+	return
+}
+
+// Lift removes the specified shape from the group. If it was found in the
+// group, it returns true. If it was not found, it returns false.
+func (group *ShapeGroup) Lift (shape Shape) (found bool) {
+	index, found := group.indexOf(shape)
+	if !found { return }
+
+	group.shapes = append(group.shapes[:index], group.shapes[index + 1:]...)
+	shape.setParent(nil)
+	group.SetDirty()
+	shape.SetDirty()
+	return
+}
+
 // TODO: create child manipulation methods:
 // have these take in pointers:
-// - Lift
 // - Insert
 // - Float
 // - Sink
