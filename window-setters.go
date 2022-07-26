@@ -22,8 +22,9 @@ func (window *Window) SetIcon (icon ...image.Image) {
 	window.icon = icon
 }
 
-// SetSize sets the size of the window to the dimensions specified by a vector.
-func (window *Window) SetSize (size Vector) {
+// SetBounds sets the size of the window to the dimensions specified by a
+// vector.
+func (window *Window) SetBounds (size Vector) {
 	if window.window != nil {
 		window.window.SetBounds (pixel.R (
 			0, 0,
@@ -34,9 +35,9 @@ func (window *Window) SetSize (size Vector) {
 	window.size = size
 }
 
-// Size returns the bounds of the window as a rectangle
-func (window *Window) Size () (size Vector) {
-	return window.size
+// Bounds returns the dimensions of the window as a vector.
+func (window *Window) Bounds () (min, max Vector) {
+	return V(0, 0), window.size
 }
 
 // SetTransparent sets whether or not the window has a transparent framebuffer,

@@ -19,7 +19,7 @@ func run () {
 
 	window := naiad.Window { }
 	window.SetTitle("Naiad Logo")
-	window.SetSize(naiad.V(336, 80))
+	window.SetBounds(naiad.V(336, 80))
 	window.SetTransparent(true)
 	window.SetIcon(icon)
 	window.Open()
