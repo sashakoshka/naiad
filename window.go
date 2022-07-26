@@ -34,7 +34,8 @@ type Window struct {
 	boundsDirty bool
 	
 	window *pixelgl.Window
-	root   *ShapeGroup
+
+	ShapeGroup
 }
 
 // Open brings the window on screen. If the window has already been opened, this
@@ -47,7 +48,8 @@ func (window *Window) Open () (err error) {
 		icon = append(icon, pixel.PictureDataFromImage(size))
 	}
 	
-	window.root = NewShapeGroup(0, 0, window.size.X(), window.size.Y())
+	window.ShapeGroup.SetBounds(V(window.size.X(), window.size.Y()))
+	window.ShapeGroup.SetPosition(V(0, 0))
 
 	window.window, err = pixelgl.NewWindow (pixelgl.WindowConfig {
 		Title:  window.title,
@@ -74,20 +76,10 @@ func (window *Window) Open () (err error) {
 func (window *Window) draw () {
 	if window.window == nil { return }
 
-	if window.root.Dirty() {
+	if window.Dirty() {
 		window.window.Clear(color.RGBA { 0, 0, 0, 0 })	
-		window.root.draw(window.window)
+		window.ShapeGroup.draw(window.window)
 	}
 	
 	window.window.SwapBuffers()
-}
-
-// Push adds a shape to the window's root group.
-func (window *Window) Push (shape Shape) {
-	window.root.Push(shape)
-}
-
-// Pop removes the last added shape from the window's root group.
-func (window *Window) Pop () (shape Shape) {
-	return window.root.Pop()
 }

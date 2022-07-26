@@ -27,7 +27,7 @@ func (window *Window) processEvents () {
 	// update window size
 	newSize := vFromPixel(window.window.Bounds().Max)
 	if newSize != window.size {
-		window.root.SetBounds(newSize)
+		window.ShapeGroup.SetBounds(newSize)
 	}
 	window.size = newSize
 
@@ -35,7 +35,7 @@ func (window *Window) processEvents () {
 	window.mousePreviousPosition = window.mousePosition
 	window.mousePosition         = vFromPixel(window.window.MousePosition())
 	if window.mousePosition != window.mousePreviousPosition {
-		window.mouseHover = window.root.Contains(window.mousePosition)
+		window.mouseHover = window.Contains(window.mousePosition)
 	}
 
 	// update mouse buttons
