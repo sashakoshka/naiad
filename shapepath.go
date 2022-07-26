@@ -68,14 +68,14 @@ func (shape *ShapePath) Pop () (point Point) {
 	return
 }
 
-// Kind returns ShapeKindPath
+// Kind returns ShapeKindPath.
 func (shape *ShapePath) Kind () (kind ShapeKind) {
 	return ShapeKindPath
 }
 
 // Contains takes in mouse coordinates, and determines if they are inside of the
 // shape. If it is, the returned slice will have one item pointing to this
-// shape. If not, the returned slice will be nill.
+// shape. If not, the returned slice will be nil.
 func (shape *ShapePath) Contains (position Vector) (shapes []Shape) {
 	relativePosition := shape.matrix.Unproject(position.pixellate())
 	bounds := pixel.R(shape.min.x, shape.min.y, shape.max.x, shape.max.y)

@@ -26,22 +26,22 @@ func vFromPixel (vec pixel.Vec) (vector Vector) {
 	return V(vec.X, vec.Y)
 }
 
-// X returns the x value of the vector
+// X returns the x value of the vector.
 func (vector Vector) X () (x float64) {
 	return vector.x
 }
 
-// Y returns thw x value of the vector
+// Y returns thw x value of the vector.
 func (vector Vector) Y () (y float64) {
 	return vector.y
 }
 
-// SetX sets the x value of the vector
+// SetX sets the x value of the vector.
 func (vector* Vector) SetX (x float64) {
 	vector.x = x
 }
 
-// SetY sets the y value of the vector
+// SetY sets the y value of the vector.
 func (vector *Vector) SetY (y float64) {
 	vector.y = y
 }

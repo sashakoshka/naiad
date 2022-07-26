@@ -13,7 +13,7 @@ const (
 )
 
 // Shape is an interface representing an on-screen shape. For a shape to be
-// inserted into naiad's shape heirarchy, it must support these behaviors.
+// inserted into naiad's shape hierarchy, it must support these behaviors.
 type Shape interface {
 	// draw draws the shape onto the specified target.
 	draw (target pixel.Target)

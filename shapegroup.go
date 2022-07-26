@@ -62,7 +62,7 @@ func (group *ShapeGroup) Kind () (kind ShapeKind) {
 
 // Contains takes in mouse coordinates, and determines if they are inside of the
 // shape. If it is, the returned slice will have one item pointing to this
-// shape. If not, the returned slice will be nill.
+// shape. If not, the returned slice will be nil.
 func (group *ShapeGroup) Contains (position Vector) (shapes []Shape) {
 	relativePosition := group.matrix.Unproject(position.pixellate())
 	bounds := pixel.R(group.min.x, group.min.y, group.max.x, group.max.y)
@@ -73,7 +73,7 @@ func (group *ShapeGroup) Contains (position Vector) (shapes []Shape) {
 		return
 	}
 
-	// range backward over shapes, becasue we want to get the top shape
+	// range backward over shapes, because we want to get the top shape
 	// that's in contact with the position.
 	for index := len(group.shapes) - 1; index >= 0; index -- {
 		shape := group.shapes[index]

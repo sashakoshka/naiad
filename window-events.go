@@ -21,8 +21,8 @@ func (window *Window) Poll () {
 	window.processEvents()
 }
 
-// processEvents reacts to any events that have been recieved, and redraws the
-// screen if needed
+// processEvents reacts to any events that have been received, and redraws the
+// screen if needed.
 func (window *Window) processEvents () {
 	// update window size
 	newSize := vFromPixel(window.window.Bounds().Max)

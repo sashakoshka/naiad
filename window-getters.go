@@ -13,7 +13,7 @@ func (window *Window) MousePosition () (position Vector) {
 }
 
 // MousePreviousPosition returns the position of the mouse inside the window
-// bounds the previous time window.Await or window.Poll etc. was called
+// bounds the previous time window.Await or window.Poll etc. was called.
 func (window *Window) MousePreviousPosition () (previousPosition Vector) {
 	return window.mousePreviousPosition
 }
