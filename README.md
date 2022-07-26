@@ -27,22 +27,20 @@ It is not done yet dont use it.
 ## Diagram that looks more complicated than it actually is
 
 On-screen shapes in Naiad are structured using groups. These groups contain
-paths (and soon text as well). At the top there is a root group which you are
-not allowed to mess with, but you can add things to it and remove things from
-it through methods defined on the window object.
+paths (and soon text as well). At the top there is a window, which is a shape
+as well, and it as a root group. You can push, pop, lift, etc. from the window
+as you would a normal group.
 
 ```
-          ┌────────┐
-        ┌─┤ Window │
-        │ └────────┘
-        │
-        │ ┌────────────┐
-        └►│ Root Group │
-          └─────┬───┬──┘
+         ┌────────────────┐
+         │ Window         │
+         │ ┌────────────┐ │
+         │ │ Root Group │ │
+         └─┴────┬───┬───┴─┘
                 │   │
                 │   └──────┐
-                ▼          ▼
-            ┌───────┐  ┌───────┐
+                │          ▼
+            ┌───┴───┐  ┌───────┐
 ┌─────┬─────┤ Group │  │ Group ├──────┐
 │     │     └───┬───┘  └───┬───┘      ▼
 │     ▼         │          │      ┌───────┐

@@ -40,6 +40,8 @@ func (window *Window) Bounds () (min, max Vector) {
 	return V(0, 0), window.size
 }
 
+// TODO: create X, Y, SetX, and SetY methods
+
 // SetTransparent sets whether or not the window has a transparent framebuffer,
 // if supported.
 func (window *Window) SetTransparent (transparent bool) {
