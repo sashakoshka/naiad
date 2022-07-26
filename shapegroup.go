@@ -37,8 +37,10 @@ func (group *ShapeGroup) SetBounds (max Vector) {
 
 // Push adds a new shape to the top of the shape group.
 func (group *ShapeGroup) Push (shape Shape) {
-	// TODO: if the shape's parent is non-nil, pop it of the previous
-	// parent first.
+	shapeParent := shape.getParent()
+	if shapeParent != nil {
+		shapeParent.(*ShapeGroup).Lift(shape)
+	}
 	shape.setParent(group)
 	group.shapes = append(group.shapes, shape)
 	group.SetDirty()
@@ -59,8 +61,10 @@ func (group *ShapeGroup) Pop () (shape Shape) {
 
 // PushBottom inserts a shape at the bottom of the shape group.
 func (group *ShapeGroup) PushBottom (shape Shape) {
-	// TODO: if the shape's parent is non-nil, pop it of the previous
-	// parent first.
+	shapeParent := shape.getParent()
+	if shapeParent != nil {
+		shapeParent.(*ShapeGroup).Lift(shape)
+	}
 	shape.setParent(group)
 	group.shapes = append([]Shape { shape }, group.shapes...)
 	group.SetDirty()

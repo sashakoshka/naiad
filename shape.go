@@ -48,6 +48,9 @@ type Shape interface {
 	// shape - it should be called by the parent as the shape is being
 	// parented.
 	setParent (parent Shape)
+
+	// getParent returns the shape's parent.
+	getParent () (parent Shape)
 }
 
 // shapeBase is a struct which should be included in all shapes. It defines some
@@ -135,6 +138,11 @@ func (base *shapeBase) Bounds () (min, max Vector) {
 // it should be called by the parent as the shape is being parented.
 func (base *shapeBase) setParent (parent Shape) {
 	base.parent = parent
+}
+
+// getParent returns the shape's parent.
+func (base *shapeBase) getParent () (parent Shape) {
+	return base.parent
 }
 
 // contractMin ensures that the shape's minimum bound is no greater than min.
