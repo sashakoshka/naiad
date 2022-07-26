@@ -35,7 +35,7 @@ func (group *ShapeGroup) SetBounds (max Vector) {
 	group.SetDirty()
 }
 
-// Push adds a new shape to the shape group.
+// Push adds a new shape to the top of the shape group.
 func (group *ShapeGroup) Push (shape Shape) {
 	// TODO: if the shape's parent is non-nil, pop it of the previous
 	// parent first.
@@ -45,15 +45,50 @@ func (group *ShapeGroup) Push (shape Shape) {
 	shape.SetDirty()
 }
 
-// Pop removes the last shape from the shape group, and returns it.
+// Pop removes the top-most shape from the shape group, and returns it.
 func (group *ShapeGroup) Pop () (shape Shape) {
-	shape.setParent(nil)
+	if len(group.shapes) == 0 { return nil }
+	
 	shape = group.shapes[len(group.shapes) - 1]
 	group.shapes = group.shapes[:len(group.shapes) - 1]
+	shape.setParent(nil)
 	group.SetDirty()
 	shape.SetDirty()
 	return
 }
+
+// PushBottom inserts a shape at the bottom of the shape group.
+func (group *ShapeGroup) PushBottom (shape Shape) {
+	// TODO: if the shape's parent is non-nil, pop it of the previous
+	// parent first.
+	shape.setParent(group)
+	group.shapes = append([]Shape { shape }, group.shapes...)
+	group.SetDirty()
+	shape.SetDirty()
+}
+
+// PopBottom removes the bottom-most shape from the shape group, and returns it.
+func (group *ShapeGroup) PopBottom () (shape Shape) {
+	if len(group.shapes) == 0 { return nil }
+
+	shape = group.shapes[0]
+	group.shapes = group.shapes[1:]
+	shape.setParent(nil)
+	group.SetDirty()
+	shape.SetDirty()
+	return
+}
+
+// TODO: create child manipulation methods:
+// have these take in pointers:
+// - Lift
+// - Insert
+// - Float
+// - Sink
+// - FloatToTop
+// - SinkToBottom
+// possibly store a child map with pointers -> indices? maybe do some math with
+// them.
 
 // Kind returns ShapeKindGroup.
 func (group *ShapeGroup) Kind () (kind ShapeKind) {
