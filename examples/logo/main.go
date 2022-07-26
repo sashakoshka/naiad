@@ -115,11 +115,17 @@ func run () {
 
 	for !window.Closed() {
 		if window.IsLeftHeld(dGroup) {
-			// shape.SetThickness(16)
 			shape.SetY(4)
 		} else {
-			// shape.SetThickness(8)
 			shape.SetY(8)
+		}
+
+		if window.IsLeftClicked(dGroup) {
+			if shape.Thickness() == 8 {
+				shape.SetThickness(16)
+			} else {
+				shape.SetThickness(8)
+			}
 		}
 		window.Await(0)
 	}

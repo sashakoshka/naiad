@@ -49,3 +49,17 @@ func (window *Window) MouseLeftHold () (heldShapes []Shape) {
 func (window *Window) IsLeftHeld (shape Shape) (held bool) {
 	return shapeIsIn(shape, window.mouseLeftHold)
 }
+
+// MouseLeftClicked returns a list of alll shapes that were clicked with the
+// left mouse button. This emulates behavior found in most other programs, where
+// for an object to be clicked the mouse must be held down in that object, and
+// then released in that object.
+func (window *Window) MouseLeftClick () (clickedShapes []Shape) {
+	return window.mouseLeftClick
+}
+
+// IsLeftClicked returns whether or not the specified shape was just clicked
+// with the left mouse button.
+func (window *Window) IsLeftClicked (shape Shape) (clicked bool) {
+	return shapeIsIn(shape, window.mouseLeftClick)
+}

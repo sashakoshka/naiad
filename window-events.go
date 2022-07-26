@@ -39,11 +39,11 @@ func (window *Window) processEvents () {
 	}
 
 	// update mouse buttons
+	window.mouseLeftClick = nil
 	if window.window.JustPressed(pixelgl.MouseButtonLeft) {
 		window.mouseLeftHold = window.mouseHover
 	} else if window.window.JustReleased(pixelgl.MouseButtonLeft) {
 		// set leftclick to the intersection of hover and lefthold
-		window.mouseLeftClick = nil
 		for index, holdShape := range window.mouseLeftHold {
 			// as soon as these two slices differ, we have reached
 			// the end of any possible intersection
@@ -55,7 +55,5 @@ func (window *Window) processEvents () {
 				holdShape)
 		}
 		window.mouseLeftHold = nil
-	} else {
-		window.mouseLeftClick = nil
 	}
 }
