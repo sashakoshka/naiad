@@ -24,11 +24,28 @@ func (window *Window) MouseHover () (hoveredShapes []Shape) {
 	return window.mouseHover
 }
 
-// IsHovered returns whether or not the specified shape is being hovered over
-// by the mouse.
-func (window *Window) IsHovered (shape Shape) (hovered bool) {
-	for _, checkShape := range window.mouseHover {
+func shapeIsIn (shape Shape, shapes []Shape) (within bool) {
+	for _, checkShape := range shapes {
 		if checkShape == shape { return true }
 	}
 	return false
+}
+
+// IsHovered returns whether or not the specified shape is being hovered over
+// by the mouse.
+func (window *Window) IsHovered (shape Shape) (hovered bool) {
+	return shapeIsIn(shape, window.mouseHover)
+}
+
+// MouseLeftHold returns a list of all shapes that were under the mouse when its
+// left button started being held down. If the mouse's left button is not
+// currently being held down, this function returns nil.
+func (window *Window) MouseLeftHold () (heldShapes []Shape) {
+	return window.mouseLeftHold
+}
+
+// IsLeftHeld returns whether or not the specified shape is being held by the
+// left mouse button.
+func (window *Window) IsLeftHeld (shape Shape) (held bool) {
+	return shapeIsIn(shape, window.mouseLeftHold)
 }

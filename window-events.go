@@ -1,6 +1,7 @@
 package naiad
 
 import "time"
+import "github.com/faiface/pixel/pixelgl"
 
 // Await waits for an event to occur, or the timeout to elapse. It then redraws
 // the screen if needed. If the timeout is zero, there won't actually be a
@@ -23,20 +24,38 @@ func (window *Window) Poll () {
 // processEvents reacts to any events that have been recieved, and redraws the
 // screen if needed
 func (window *Window) processEvents () {
+	// update window size
 	newSize := vFromPixel(window.window.Bounds().Max)
 	if newSize != window.size {
 		window.root.SetBounds(newSize)
 	}
 	window.size = newSize
 
+	// update mouse position and hover
 	window.mousePreviousPosition = window.mousePosition
 	window.mousePosition         = vFromPixel(window.window.MousePosition())
 	if window.mousePosition != window.mousePreviousPosition {
-		window.detectMouseOver()
+		window.mouseHover = window.root.Contains(window.mousePosition)
 	}
-}
 
-// detectMouseOver detects which shape is being hovered over by the mouse.
-func (window *Window) detectMouseOver () {
-	window.mouseHover = window.root.Contains(window.mousePosition)
+	// update mouse buttons
+	if window.window.JustPressed(pixelgl.MouseButtonLeft) {
+		window.mouseLeftHold = window.mouseHover
+	} else if window.window.JustReleased(pixelgl.MouseButtonLeft) {
+		// set leftclick to the intersection of hover and lefthold
+		window.mouseLeftClick = nil
+		for index, holdShape := range window.mouseLeftHold {
+			// as soon as these two slices differ, we have reached
+			// the end of any possible intersection
+			if index     >= len(window.mouseHover)   { break }
+			if holdShape != window.mouseHover[index] { break }
+
+			window.mouseLeftClick = append (
+				window.mouseLeftClick,
+				holdShape)
+		}
+		window.mouseLeftHold = nil
+	} else {
+		window.mouseLeftClick = nil
+	}
 }

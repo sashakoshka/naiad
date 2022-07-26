@@ -3,7 +3,7 @@ package naiad
 import "image"
 import "github.com/faiface/pixel"
 
-// SetTitle sets the window title.
+//  SetTitle sets the window title.
 func (window *Window) SetTitle (title string) {
 	if window.window != nil {
 		window.window.SetTitle(title)

@@ -114,10 +114,12 @@ func run () {
 	window.Poll()
 
 	for !window.Closed() {
-		if window.IsHovered(dGroup) {
-			shape.SetThickness(16)
+		if window.IsLeftHeld(dGroup) {
+			// shape.SetThickness(16)
+			shape.SetY(4)
 		} else {
-			shape.SetThickness(8)
+			// shape.SetThickness(8)
+			shape.SetY(8)
 		}
 		window.Await(0)
 	}

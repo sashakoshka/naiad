@@ -27,7 +27,9 @@ type Window struct {
 	mousePosition         Vector
 	mousePreviousPosition Vector
 	
-	mouseHover []Shape
+	mouseHover     []Shape
+	mouseLeftHold  []Shape
+	mouseLeftClick []Shape
 
 	boundsDirty bool
 	
