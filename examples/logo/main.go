@@ -127,6 +127,7 @@ func run () {
 				shape.SetThickness(8)
 			}
 		}
+
 		window.Await(0)
 	}
 }

@@ -1,5 +1,7 @@
 package naiad
 
+import "github.com/faiface/pixel/pixelgl"
+
 // Closed returns. whether the window is closed
 func (window *Window) Closed () (closed bool) {
 	if window.window == nil { return true }
@@ -62,4 +64,31 @@ func (window *Window) MouseLeftClick () (clickedShapes []Shape) {
 // with the left mouse button.
 func (window *Window) IsLeftClicked (shape Shape) (clicked bool) {
 	return shapeIsIn(shape, window.mouseLeftClick)
+}
+
+// Typed returns the string of characters typed since the window input was last
+// updated.
+func (window *Window) Typed () (text string) {
+	return window.window.Typed()
+}
+
+// Pressed returns whether a key is currently being pressed.
+func (window *Window) Pressed (key Key) (pressed bool) {
+	return window.window.Pressed(pixelgl.Button(key))
+}
+
+// Repeated returns whether a repeat event is being triggered for a key (when it
+// has been held down).
+func (window *Window) Repeated (key Key) (repeated bool) {
+	return window.window.Repeated(pixelgl.Button(key))
+}
+
+// JustPressed returns whether a key has just been pressed down.
+func (window *Window) JustPressed (key Key) (pressed bool) {
+	return window.window.JustPressed(pixelgl.Button(key))
+}
+
+// JustReleased returns whether a key has just been released.
+func (window *Window) JustReleased (key Key) (released bool) {
+	return window.window.JustReleased(pixelgl.Button(key))
 }

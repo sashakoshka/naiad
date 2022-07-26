@@ -78,7 +78,7 @@ objects inside of them don't need to redraw themselves all the dang time.
 - [X] Paths
 - [X] Shape Groups
 - [X] Calculate mouse click, drag, and hover information in relation to shapes
-- [ ] Pass keyboard input as well
+- [X] Pass keyboard input as well
 - [ ] Text
 - [ ] Stop using pixel as a backend
 - [ ] Texture paths, text, etc with images
