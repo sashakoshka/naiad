@@ -28,8 +28,8 @@ It is not done yet dont use it.
 
 On-screen shapes in Naiad are structured using groups. These groups contain
 paths (and soon text as well). At the top there is a window, which is a shape
-as well, and it as a root group. You can push, pop, lift, etc. from the window
-as you would a normal group.
+as well, and it acts as a root group. You can push, pop, lift, etc. from the
+window as you would a normal group.
 
 ```
          ┌────────────────┐
@@ -77,7 +77,7 @@ objects inside of them don't need to redraw themselves all the dang time.
 
 - [X] Paths
 - [X] Shape Groups
-- [ ] Calculate mouse click, drag, and hover information in relation to shapes
+- [X] Calculate mouse click, drag, and hover information in relation to shapes
 - [ ] Pass keyboard input as well
 - [ ] Text
 - [ ] Stop using pixel as a backend
